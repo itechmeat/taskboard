@@ -1,0 +1,39 @@
+:root {
+  --gap: 16px;
+  --gap-0-5: 8px;
+  --gap-1-5: 24px;
+  --gap-2: 32px;
+  --min-width: 320px;
+
+  --color-dark: #{$colorDark};
+  --color-light: #{$colorLight};
+  --color-gray: #{$colorGray};
+  --color-primary: #{$colorPrimary};
+  --color-accent: #{$colorAccent};
+  --color-warning: #{$colorWarning};
+  --color-danger: #{$colorDanger};
+  --color-success: #{$colorSuccess};
+  --color-info: #{$colorInfo};
+  --color-text: #{$colorText};
+  --color-text-secondary: #{$colorTextSecondary};
+  --color-text-hint: #{$colorTextHint};
+  --color-border: #{$colorBorder};
+  --color-shadow: #{$colorShadow};
+  --color-bg: #{$colorBg};
+  --color-bg-accent: #{$colorBgAccent};
+
+  --font-size-base: 14px;
+  --font-size-tiny: 11px;
+  --font-size-small: 12px;
+  --font-size-big: 16px;
+  --font-size-bigger: 18px;
+  --font-size-legend: 20px;
+  --font-size-large: 24px;
+  --font-size-title: 28px;
+  --font-size-headline: 32px;
+  --font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Noto Sans", Ubuntu, "Droid Sans", "Helvetica Neue", sans-serif;
+
+  --border-raius: 4px;
+
+  --speed: 0.25s;
+}
