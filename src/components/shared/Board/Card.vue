@@ -1,12 +1,12 @@
 <template>
-  <li v-if="value" class="board-card">
+  <div v-if="value" class="board-card">
     <router-link class="board-card__link" :to="'/project/' + value.id">
       <div class="board-card__label">{{ value.name }}</div>
       <div class="board-card__scale">
         <div class="board-card__progress" :style="progressStyles"></div>
       </div>
     </router-link>
-  </li>
+  </div>
 </template>
 
 <script>

@@ -5,6 +5,8 @@
       <BoardColumn :key="column.id" :name="column.name" :cards="column.cards" />
       <div :key="column.id + 'Space'" class="board__space" />
     </template>
+
+    <ui-modal :visible="isModalVisible" @close="closeModal"> CARD </ui-modal>
   </main>
 </template>
 
@@ -116,7 +118,28 @@ export default {
           ],
         },
       ],
+      isModalVisible: true,
     };
+  },
+
+  watch: {
+    "$route.params": {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        if (!val || !val.id) {
+          this.isModalVisible = false;
+          return;
+        }
+        this.isModalVisible = true;
+      },
+    },
+  },
+
+  methods: {
+    closeModal() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
