@@ -23,7 +23,14 @@
     </div>
 
     <footer class="board-column__footer">
-      <button>Add another card</button>
+      <ui-button
+        expanded
+        type="clear"
+        class="ui-menu__control"
+        @click="addCard"
+      >
+        Add another card
+      </ui-button>
     </footer>
   </section>
 </template>

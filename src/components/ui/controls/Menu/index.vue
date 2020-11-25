@@ -3,7 +3,9 @@
     v-click-outside="closeMenu"
     :class="['ui-menu', { 'ui-menu_open': isOpen }]"
   >
-    <button class="ui-menu__control" @click="handleClick">=</button>
+    <ui-button type="clear" class="ui-menu__control" @click="handleClick">
+      =
+    </ui-button>
 
     <div class="ui-menu__dropdown">
       <slot />
