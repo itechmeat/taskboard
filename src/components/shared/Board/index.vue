@@ -122,7 +122,7 @@ export default {
           ],
         },
       ],
-      isModalVisible: true,
+      isModalVisible: false,
     };
   },
 

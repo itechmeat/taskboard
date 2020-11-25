@@ -27,10 +27,14 @@
       <span class="issue__info">5/10</span>
       <ui-battery :progress="50" />
     </h3>
-    <ul class="issue__tasks">
-      <li v-for="task in 10" :key="task" class="issue__task">
-        Task {{ task }}
-      </li>
+    <div class="issue__tasks">
+      <div class="issue__space" />
+      <template v-for="task in 10">
+        <div :key="task" class="issue__task">
+          <Task :value="task" />
+        </div>
+        <div :key="task + 'Space'" class="issue__space" />
+      </template>
       <li class="issue__task">
         <ui-button
           expanded
@@ -41,13 +45,19 @@
           Add another task
         </ui-button>
       </li>
-    </ul>
+    </div>
   </article>
 </template>
 
 <script>
+import Task from "@/components/shared/Issue/Task";
+
 export default {
   name: "Issue",
+
+  components: {
+    Task,
+  },
 
   props: {
     columns: {
@@ -131,10 +141,8 @@ $block: ".issue";
     margin: var(--gap) 0 0;
   }
 
-  &__task {
-    &:not(:first-child) {
-      margin-top: var(--gap-0-5);
-    }
+  &__space {
+    height: 4px;
   }
 }
 </style>

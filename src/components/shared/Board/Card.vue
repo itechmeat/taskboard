@@ -1,10 +1,8 @@
 <template>
-  <div v-if="value" class="board-card">
-    <router-link class="board-card__link" :to="'/project/' + value.id">
-      <div class="board-card__label">{{ value.name }}</div>
-      <ui-battery :progress="value.progress" />
-    </router-link>
-  </div>
+  <router-link v-if="value" class="board-card" :to="'/project/' + value.id">
+    <div class="board-card__label">{{ value.name }}</div>
+    <ui-battery :progress="value.progress" />
+  </router-link>
 </template>
 
 <script>
@@ -26,9 +24,7 @@ export default {
 $block: ".board-card";
 
 #{$block} {
-  font-size: var(--font-size-base);
-
-  &__link {
+  & {
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -38,6 +34,7 @@ $block: ".board-card";
     border-radius: var(--border-raius);
     background: var(--color-light);
     box-shadow: 0 2px 0 -1px rgba(#000, 0.1);
+    font-size: var(--font-size-base);
     text-decoration: none;
     transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
     will-change: transform, box-shadow;
