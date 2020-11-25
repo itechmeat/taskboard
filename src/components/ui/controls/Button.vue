@@ -9,7 +9,7 @@
     :class="buttonClass"
     @click="handleClick"
   >
-    <span class="ui-button__text">
+    <span v-if="$slots.default" class="ui-button__text">
       <slot />
     </span>
   </component>

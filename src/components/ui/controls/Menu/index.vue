@@ -4,7 +4,7 @@
     :class="['ui-menu', { 'ui-menu_open': isOpen }]"
   >
     <ui-button type="clear" class="ui-menu__control" @click="handleClick">
-      =
+      <span class="ui-menu__icon" />
     </ui-button>
 
     <div class="ui-menu__dropdown">
@@ -53,7 +53,49 @@ $block: ".ui-menu";
   position: relative;
 
   &__control {
+    position: relative;
     vertical-align: bottom;
+  }
+
+  &__icon {
+    position: absolute;
+    top: calc(50% - 1px);
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: var(--color-text-hint);
+    pointer-events: none;
+    transition: transform 0.2s;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 0;
+      width: inherit;
+      height: inherit;
+      border-radius: 50%;
+      background: inherit;
+      transition: transform 0.2s;
+    }
+
+    &::after {
+      top: 5px;
+    }
+
+    #{$block}_open & {
+      transform: translateY(2px) rotate(90deg);
+
+      &::before {
+        transform: translate(-3px, 9px);
+      }
+
+      &::after {
+        transform: translate(-3px, -9px);
+      }
+    }
   }
 
   &__dropdown {
