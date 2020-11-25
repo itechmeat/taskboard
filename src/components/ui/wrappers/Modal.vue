@@ -1,7 +1,9 @@
 <template>
   <div :class="classes" @click.self="close">
     <div class="ui-modal__main">
-      <slot />
+      <div class="ui-modal__content">
+        <slot />
+      </div>
 
       <button class="ui-modal__close" @click.prevent="close" />
     </div>
@@ -54,6 +56,7 @@ $block: ".ui-modal";
   align-items: center;
   justify-content: center;
   position: fixed;
+  z-index: -1;
   top: 0;
   right: 0;
   bottom: 0;
@@ -64,13 +67,13 @@ $block: ".ui-modal";
 
   &,
   &_closing {
-    z-index: -1;
     opacity: 0;
   }
 
   &_visible {
+    z-index: 100;
+
     &:not(#{$block}_closing) {
-      z-index: 100;
       opacity: 1;
     }
   }
@@ -79,23 +82,35 @@ $block: ".ui-modal";
     flex: 0 0 100%;
     position: relative;
     width: 100vw;
-    height: 100vh;
-    padding: var(--gap-2);
     background: var(--color-light);
 
     @include display(desktop) {
       flex: 0 0 600px;
       width: 600px;
-      height: auto;
       max-width: calc(100vw - var(--gap-2));
-      max-height: calc(100vh - var(--gap-2));
       border-radius: var(--border-raius);
+    }
+  }
+
+  &__content {
+    overflow-y: auto;
+    padding: var(--gap-2);
+  }
+
+  &__main,
+  &__content {
+    height: 100vh;
+
+    @include display(desktop) {
+      max-height: calc(100vh - var(--gap-2) * 3);
+      height: auto;
     }
   }
 
   &__close {
     @extend %resetButton;
     position: absolute;
+    z-index: 10;
     top: var(--gap-0-5);
     right: var(--gap-0-5);
     width: var(--gap-1-5);

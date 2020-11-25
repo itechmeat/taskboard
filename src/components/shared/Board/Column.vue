@@ -95,9 +95,16 @@ $block: ".board-column";
 
   &__name {
     flex: 1;
-    margin: 0;
+    margin: -4px 0;
+    padding: 4px var(--gap-0-5);
+    border-radius: var(--border-raius);
     font-size: var(--font-size-base);
     font-weight: 600;
+
+    &:focus {
+      background: var(--color-bg);
+      outline: none;
+    }
   }
 
   &__menu {

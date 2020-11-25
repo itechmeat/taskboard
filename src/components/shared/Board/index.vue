@@ -6,18 +6,22 @@
       <div :key="column.id + 'Space'" class="board__space" />
     </template>
 
-    <ui-modal :visible="isModalVisible" @close="closeModal"> CARD </ui-modal>
+    <ui-modal :visible="isModalVisible" @close="closeModal">
+      <Issue :columns="columns" />
+    </ui-modal>
   </main>
 </template>
 
 <script>
 import BoardColumn from "@/components/shared/Board/Column";
+import Issue from "@/components/shared/Issue";
 
 export default {
   name: "Board",
 
   components: {
     BoardColumn,
+    Issue,
   },
 
   data() {

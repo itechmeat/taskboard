@@ -36,6 +36,10 @@ export default {
       type: String,
       default: "medium",
     },
+    alignment: {
+      type: String,
+      default: "center",
+    },
     icon: {
       type: String,
       default: undefined,
@@ -69,6 +73,7 @@ export default {
         "ui-button": true,
         ["ui-button_" + this.type]: true,
         ["ui-button_" + this.size]: true,
+        ["ui-button_" + this.alignment]: true,
         "ui-button_rounded": this.rounded,
         "ui-button_outlined": this.outlined,
         "ui-button_expanded": this.expanded,
@@ -245,6 +250,14 @@ export default {
     &:hover {
       background: rgba(#000, 0.1);
     }
+  }
+
+  &_left {
+    text-align: left;
+  }
+
+  &_right {
+    text-align: right;
   }
 
   // size
