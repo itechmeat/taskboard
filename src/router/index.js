@@ -8,24 +8,24 @@ const routes = [
   {
     path: "/",
     name: "Board",
-    component: Board
+    component: Board,
   },
   {
     path: "/project",
     name: "Project",
-    component: Board
+    component: Board,
   },
   {
     path: "/project/:id",
     name: "Card",
-    component: Board
-  }
+    component: Board,
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

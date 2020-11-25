@@ -9,7 +9,7 @@ export default {
   name: "BoardView",
 
   components: {
-    Board
-  }
+    Board,
+  },
 };
 </script>

@@ -8,14 +8,14 @@
 
 <script>
 export default {
-  name: "ProjectCard",
+  name: "BoardCard",
 
   props: {
     value: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>
 
@@ -32,8 +32,7 @@ $block: ".board-card";
     background: var(--color-light);
     box-shadow: 0 2px 0 -1px rgba(#000, 0.1);
     text-decoration: none;
-    transition: transform 0.1s ease-in-out,
-      box-shadow 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
     will-change: transform, box-shadow;
 
     &:hover {

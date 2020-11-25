@@ -1,12 +1,10 @@
 <template>
-  <header class="header">
-    TaskBoard
-  </header>
+  <header class="header">TaskBoard</header>
 </template>
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
 };
 </script>
 

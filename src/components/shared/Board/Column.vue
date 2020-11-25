@@ -4,7 +4,14 @@
       <h2 class="board-column__name" contenteditable>
         {{ name }}
       </h2>
-      <button class="board-column__menu">¦</button>
+
+      <ui-menu class="board-column__menu">
+        <ui-menu-item @click="addCard">Add Card</ui-menu-item>
+        <ui-menu-item @click="deleteCards">Delete all cards</ui-menu-item>
+        <ui-menu-item @click="deleteColumn">Delete this column</ui-menu-item>
+        <ui-menu-item to="/">Inner link</ui-menu-item>
+        <ui-menu-item href="https://google.com">Outer link</ui-menu-item>
+      </ui-menu>
     </header>
 
     <div class="board-column__list">
@@ -25,22 +32,36 @@
 import BoardCard from "@/components/shared/Board/Card";
 
 export default {
-  name: "ProjectColumn",
+  name: "BoardColumn",
 
   props: {
     name: {
       type: String,
-      default: "New Column"
+      default: "New Column",
     },
     cards: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
 
   components: {
-    BoardCard
-  }
+    BoardCard,
+  },
+
+  methods: {
+    addCard() {
+      console.info("addCard (not implemented)");
+    },
+
+    deleteCards() {
+      console.info("deleteCards (not implemented)");
+    },
+
+    deleteColumn() {
+      console.info("deleteColumn (not implemented)");
+    },
+  },
 };
 </script>
 

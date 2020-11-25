@@ -15,7 +15,7 @@ export default {
   name: "Board",
 
   components: {
-    BoardColumn
+    BoardColumn,
   },
 
   data() {
@@ -27,18 +27,18 @@ export default {
           cards: [
             {
               id: "c1",
-              name: "Card Number 1"
+              name: "Card Number 1",
             },
             {
               id: "c2",
-              name: "Card Number 2"
-            }
-          ]
+              name: "Card Number 2",
+            },
+          ],
         },
         {
           id: "2",
           name: "To Do",
-          cards: []
+          cards: [],
         },
         {
           id: "3",
@@ -46,9 +46,9 @@ export default {
           cards: [
             {
               id: "c3",
-              name: "Card Number 3"
-            }
-          ]
+              name: "Card Number 3",
+            },
+          ],
         },
         {
           id: "4",
@@ -56,29 +56,29 @@ export default {
           cards: [
             {
               id: "c4",
-              name: "Card Number 4"
+              name: "Card Number 4",
             },
             {
               id: "c5",
-              name: "Card Number 5"
+              name: "Card Number 5",
             },
             {
               id: "c6",
-              name: "Card Number 6"
+              name: "Card Number 6",
             },
             {
               id: "c7",
-              name: "Card Number 7"
+              name: "Card Number 7",
             },
             {
               id: "c8",
-              name: "Card Number 8"
-            }
-          ]
-        }
-      ]
+              name: "Card Number 8",
+            },
+          ],
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

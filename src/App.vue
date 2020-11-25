@@ -11,8 +11,8 @@ import TheHeader from "@/components/shared/TheHeader";
 
 export default {
   components: {
-    TheHeader
-  }
+    TheHeader,
+  },
 };
 </script>
 
