@@ -1,1 +1,1 @@
-export default ["Backlog", "To Do", "In Progress", "Testing", "Done"];
+export default ["Backlog", "To Do", "In Progress", "Done"];

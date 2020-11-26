@@ -29,13 +29,25 @@
       Tasks
       <ui-battery :progress="value.progress" />
     </h3>
-    <div class="issue__tasks">
-      <div class="issue__space" />
-      <template v-for="task in value.tasks">
+
+    <div class="issue__tasks" @dragover.prevent @drop.stop.prevent="handleDrop">
+      <Gap :index="0" :active="newIndex === 0" :visible="isDragActive" />
+      <template v-for="(task, index) in value.tasks">
         <div :key="task" class="issue__task">
-          <Task :id="task" @update="updateTask" @delete="removeTask" />
+          <Task
+            :id="task"
+            :index="index"
+            @update="updateTask"
+            @delete="removeTask"
+          />
         </div>
-        <div :key="task + 'Space'" class="issue__space" />
+
+        <Gap
+          :key="index + 'Gap'"
+          :index="index + 1"
+          :active="newIndex === index + 1"
+          :visible="isDragActive"
+        />
       </template>
       <li class="issue__task">
         <ui-button
@@ -56,6 +68,7 @@ import { mapGetters, mapActions } from "vuex";
 import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
 import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
 import Task from "@/components/shared/Issue/Task";
+import Gap from "@/components/shared/Issue/Gap";
 import { clearText } from "@/libs/utils";
 
 export default {
@@ -63,6 +76,7 @@ export default {
 
   components: {
     Task,
+    Gap,
   },
 
   props: {
@@ -79,6 +93,10 @@ export default {
   data() {
     return {
       value: null,
+      isDropZoneActive: false,
+      taskIndex: null,
+      newIndex: null,
+      isDragActive: false,
     };
   },
 
@@ -109,6 +127,17 @@ export default {
         this.value = issue;
       },
     },
+  },
+
+  beforeMount() {
+    this.$nextTick(() => {
+      this.removeListeners();
+      this.addListeners();
+    });
+  },
+
+  beforeDestroy() {
+    this.removeListeners();
   },
 
   methods: {
@@ -201,6 +230,100 @@ export default {
       await this.calculateProgress();
       await this.saveIssue(this.value);
     },
+
+    addListeners() {
+      document.addEventListener(
+        "dragstart",
+        (event) => this.handleDrag(event, true),
+        false
+      );
+
+      document.addEventListener(
+        "dragend",
+        (event) => this.handleDrag(event, false),
+        false
+      );
+
+      document.addEventListener(
+        "dragenter",
+        (event) => this.handleDropZone(event, true),
+        false
+      );
+
+      document.addEventListener(
+        "dragleave",
+        (event) => this.handleDropZone(event, false),
+        false
+      );
+    },
+
+    removeListeners() {
+      document.removeEventListener(
+        "dragstart",
+        (event) => this.handleDrag(event, true),
+        false
+      );
+
+      document.removeEventListener(
+        "dragend",
+        (event) => this.handleDrag(event, false),
+        false
+      );
+
+      document.removeEventListener(
+        "dragenter",
+        (event) => this.handleDropZone(event, true),
+        false
+      );
+
+      document.removeEventListener(
+        "dragleave",
+        (event) => this.handleDropZone(event, false),
+        false
+      );
+    },
+
+    handleDrag(event, state) {
+      this.isDragActive = state;
+      let taskIndex;
+      if (state) {
+        taskIndex = Number(event.target.dataset.task);
+      }
+      this.taskIndex = taskIndex;
+    },
+
+    handleDropZone(event, state) {
+      if (event.target.className.includes("space-zone")) {
+        if (!state) {
+          this.newIndex = null;
+          return;
+        }
+        this.isDropZoneActive = state;
+        this.newIndex = Number(event.target.dataset.index);
+      }
+    },
+
+    async handleDrop() {
+      if (this.newIndex !== null) {
+        if (this.taskIndex || this.taskIndex === 0) {
+          const task = this.value.tasks[this.taskIndex];
+          if (this.taskIndex < this.newIndex) {
+            this.value.tasks.splice(this.newIndex, 0, task);
+            this.value.tasks.splice(this.taskIndex, 1);
+          } else {
+            this.value.tasks.splice(this.taskIndex, 1);
+            this.value.tasks.splice(this.newIndex, 0, task);
+          }
+          await this.saveIssue(this.value);
+        }
+      }
+
+      this.$nextTick(() => {
+        this.taskIndex = null;
+        this.newIndex = null;
+        this.isDropZoneActive = false;
+      });
+    },
   },
 };
 </script>
@@ -263,10 +386,6 @@ $block: ".issue";
   &__tasks {
     @extend %resetList;
     margin: var(--gap) 0 0;
-  }
-
-  &__space {
-    height: 4px;
   }
 }
 </style>

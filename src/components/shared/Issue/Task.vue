@@ -1,11 +1,22 @@
 <template>
-  <div v-if="value" class="task" :class="{ task_open: isOpen }">
+  <div
+    v-if="value"
+    :data-task="index"
+    :class="{ task_open: isOpen }"
+    :draggable="canDrag"
+    class="task"
+  >
     <div class="task__main">
       <div class="task__handler"></div>
       <div class="task__check">
         <input v-model="value.isDone" type="checkbox" @change="save" />
       </div>
-      <input v-model="value.name" class="task__name" @blur="save" />
+      <input
+        v-model="value.name"
+        class="task__name"
+        @focus="focus"
+        @blur="save"
+      />
       <div
         class="task__progress"
         :class="{ task__progress_hidden: value.isDone }"
@@ -51,12 +62,17 @@ export default {
       type: String,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    },
   },
 
   data() {
     return {
       value: null,
       isOpen: false,
+      canDrag: true,
     };
   },
 
@@ -89,9 +105,14 @@ export default {
   methods: {
     ...mapActions("tasks", ["fetchTasks", "saveTask", "deleteTask"]),
 
+    focus() {
+      this.canDrag = false;
+    },
+
     async save() {
       await this.saveTask(this.value);
       this.$emit("update");
+      this.canDrag = true;
     },
 
     async remove() {
