@@ -1,9 +1,11 @@
 <template>
-  <section class="board-column">
+  <section v-if="value" class="board-column">
     <header class="board-column__header">
-      <h2 class="board-column__name" contenteditable>
-        {{ name }}
-      </h2>
+      <input
+        :value="value.name"
+        class="board-column__name"
+        @blur="handleNameBlur"
+      />
 
       <ui-menu class="board-column__menu">
         <ui-menu-item @click="addCard">Add Card</ui-menu-item>
@@ -36,15 +38,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import BoardCard from "@/components/shared/Board/Card";
+import { clearText } from "@/libs/utils";
 
 export default {
   name: "BoardColumn",
 
   props: {
-    name: {
-      type: String,
-      default: "New Column",
+    value: {
+      type: Object,
+      required: true,
     },
     cards: {
       type: Array,
@@ -57,7 +61,25 @@ export default {
   },
 
   methods: {
+    ...mapActions("project", ["saveIssue"]),
+
+    handleNameBlur(e) {
+      console.log(e);
+      const newText = clearText(e.target.value);
+      if (newText === this.value.name) {
+        return;
+      }
+      this.$emit("edit", {
+        ...this.value,
+        name: newText,
+      });
+    },
+
     addCard() {
+      this.saveIssue({
+        name: "Some Title Issue",
+        description: "And description",
+      });
       console.info("addCard (not implemented)");
     },
 
@@ -66,7 +88,7 @@ export default {
     },
 
     deleteColumn() {
-      console.info("deleteColumn (not implemented)");
+      this.$emit("delete", this.value.id);
     },
   },
 };
@@ -97,7 +119,9 @@ $block: ".board-column";
     flex: 1;
     margin: -4px 0;
     padding: 4px var(--gap-0-5);
+    border: none;
     border-radius: var(--border-raius);
+    background: none;
     font-size: var(--font-size-base);
     font-weight: 600;
 

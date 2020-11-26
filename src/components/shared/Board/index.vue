@@ -1,10 +1,19 @@
 <template>
   <main class="board">
     <div class="board__space" />
-    <template v-for="column in columns">
-      <BoardColumn :key="column.id" :name="column.name" :cards="column.cards" />
+    <template v-for="column in statuses">
+      <BoardColumn
+        :key="column.id"
+        :value="column"
+        @edit="save"
+        @delete="remove"
+      />
       <div :key="column.id + 'Space'" class="board__space" />
     </template>
+
+    <div class="board__new">
+      <ui-button expanded type="primary" @click="add">Add column</ui-button>
+    </div>
 
     <ui-modal :visible="isModalVisible" @close="closeModal">
       <Issue :columns="columns" />
@@ -13,6 +22,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { GET_STATUSES } from "@/store/modules/statuses/types";
 import BoardColumn from "@/components/shared/Board/Column";
 import Issue from "@/components/shared/Issue";
 
@@ -126,6 +137,23 @@ export default {
     };
   },
 
+  computed: {
+    ...mapGetters("statuses", {
+      statuses: GET_STATUSES,
+    }),
+
+    lastOrder() {
+      if (!this.statuses || this.statuses.length === 0) {
+        return 0;
+      }
+
+      return Math.max.apply(
+        null,
+        this.statuses.map((status) => status.order)
+      );
+    },
+  },
+
   watch: {
     "$route.params": {
       immediate: true,
@@ -140,7 +168,31 @@ export default {
     },
   },
 
+  created() {
+    this.fetchStatuses();
+  },
+
   methods: {
+    ...mapActions("statuses", ["fetchStatuses", "saveStatus", "deleteStatus"]),
+
+    add() {
+      const name = prompt("Name of the Status", "New Status");
+
+      this.saveStatus({
+        name,
+        order: this.lastOrder + 10,
+      });
+    },
+
+    save(val) {
+      this.saveStatus(val);
+    },
+
+    remove(id) {
+      console.log("remove", id);
+      this.deleteStatus(id);
+    },
+
     closeModal() {
       this.$router.push("/");
     },
@@ -164,6 +216,13 @@ $block: ".board";
   &__space {
     flex: 0 0 var(--gap);
     align-self: stretch;
+  }
+
+  &__new {
+    flex: 0 0 auto;
+    width: 240px;
+    box-sizing: border-box;
+    padding-right: var(--gap);
   }
 }
 </style>
