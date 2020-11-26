@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <div v-if="statuses && statuses.length > 0">
+    <div
+      v-if="statuses && statuses.length > 0 && !isGenerating"
+      class="home__options"
+    >
       <ui-button size="large" type="primary" to="/project">
         Open project
+      </ui-button>
+
+      <br />
+
+      <ui-button size="big" type="danger" @click="remove">
+        Delete project
       </ui-button>
     </div>
 
     <div v-else class="home__options">
       <ui-button size="large" type="success" @click="generate">
-        Generate Demo
+        Generate Demo Project
       </ui-button>
       <ui-button size="large" type="primary" outlined to="/project">
         Open empty project
       </ui-button>
+
+      <p>
+        I recommend that you generate a demo project, which shows the structure
+        of the project in a rather informative way.
+      </p>
     </div>
   </div>
 </template>
@@ -32,16 +46,24 @@ export default {
     }),
   },
 
+  data() {
+    return {
+      isGenerating: false,
+    };
+  },
+
   created() {
     this.fetchStatuses();
   },
 
   methods: {
+    ...mapActions("system", ["clearDB"]),
     ...mapActions("statuses", ["fetchStatuses", "saveStatus"]),
     ...mapActions("issues", ["saveIssue"]),
     ...mapActions("tasks", ["saveTask"]),
 
     async generate() {
+      this.isGenerating = true;
       STATUSES.forEach((status, index) => {
         this.saveStatus({
           name: status,
@@ -77,7 +99,13 @@ export default {
         });
       }
 
+      this.isGenerating = false;
       this.$router.push("/project");
+    },
+
+    async remove() {
+      await this.clearDB();
+      await this.fetchStatuses();
     },
   },
 };
@@ -110,11 +138,19 @@ $block: ".home";
   justify-content: center;
 
   &__options {
-    display: flex;
+    text-align: center;
 
     .ui-button {
       width: 240px;
       margin: var(--gap-0-5);
+    }
+
+    p {
+      max-width: 520px;
+      margin: 40px auto 0;
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-bigger);
+      line-height: 1.6;
     }
   }
 }

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import system from "./modules/system";
 import statuses from "./modules/statuses";
 import issues from "./modules/issues";
 import tasks from "./modules/tasks";
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
+    system,
     statuses,
     issues,
     tasks,
