@@ -42,28 +42,6 @@ export default {
 
   data() {
     return {
-      columns: [
-        {
-          id: "1",
-          name: "Backlog",
-        },
-        {
-          id: "2",
-          name: "To Do",
-        },
-        {
-          id: "3",
-          name: "In Progress",
-        },
-        {
-          id: "4",
-          name: "Testing",
-        },
-        {
-          id: "5",
-          name: "Done",
-        },
-      ],
       isModalVisible: false,
       visibleIssueId: null,
     };
@@ -127,12 +105,11 @@ export default {
     },
 
     remove(id) {
-      console.log("remove", id);
       this.deleteStatus(id);
     },
 
     closeModal() {
-      this.$router.push("/");
+      this.$router.push("/project");
     },
   },
 };

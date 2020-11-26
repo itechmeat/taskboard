@@ -1,5 +1,7 @@
 <template>
-  <header class="header">TaskBoard</header>
+  <header class="header">
+    <router-link to="/" class="header__brand">TaskBoard</router-link>
+  </header>
 </template>
 
 <script>
@@ -24,5 +26,9 @@ $block: ".header";
   color: var(--color-light);
   font-size: var(--font-size-legend);
   font-weight: 500;
+
+  &__brand {
+    text-decoration: none;
+  }
 }
 </style>

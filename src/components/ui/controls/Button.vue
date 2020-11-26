@@ -58,7 +58,7 @@ export default {
   computed: {
     tag() {
       if (this.to) {
-        return "nuxt-link";
+        return "router-link";
       }
 
       if (this.href) {
