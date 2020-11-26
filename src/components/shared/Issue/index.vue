@@ -27,14 +27,13 @@
 
     <h3 class="issue__legend">
       Tasks
-      <span class="issue__info">5/10</span>
-      <ui-battery :progress="50" />
+      <ui-battery :progress="value.progress" />
     </h3>
     <div class="issue__tasks">
       <div class="issue__space" />
       <template v-for="task in value.tasks">
         <div :key="task" class="issue__task">
-          <Task :id="task" @delete="removeTask" />
+          <Task :id="task" @update="updateTask" @delete="removeTask" />
         </div>
         <div :key="task + 'Space'" class="issue__space" />
       </template>
@@ -55,6 +54,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
+import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
 import Task from "@/components/shared/Issue/Task";
 import { clearText } from "@/libs/utils";
 
@@ -85,6 +85,9 @@ export default {
   computed: {
     ...mapGetters("issues", {
       issue: GET_ISSUE_BY_ID,
+    }),
+    ...mapGetters("tasks", {
+      task: GET_TASK_BY_ID,
     }),
   },
 
@@ -156,6 +159,8 @@ export default {
       const tasks = this.value.tasks || [];
       tasks.push(taskId);
 
+      await this.calculateProgress();
+
       await this.saveIssue({
         ...this.value,
         tasks,
@@ -164,9 +169,36 @@ export default {
       await this.fetchIssues();
     },
 
+    async updateTask() {
+      await this.calculateProgress();
+      await this.saveIssue(this.value);
+    },
+
+    async calculateProgress() {
+      await this.fetchTasks();
+
+      const progressList = [];
+
+      this.value.tasks.forEach((id) => {
+        const taskData = this.task(id);
+        if (taskData) {
+          if (taskData.isDone) {
+            progressList.push(100);
+            return;
+          }
+          progressList.push(Number(taskData.progress) || 0);
+        }
+      });
+
+      const sum = progressList.reduce((a, b) => a + b, 0);
+
+      this.value.progress = Math.ceil((sum / progressList.length) * 100) / 100;
+    },
+
     async removeTask(id) {
       const index = this.value.tasks.findIndex((task) => task === id);
       this.value.tasks.splice(index, 1);
+      await this.calculateProgress();
       await this.saveIssue(this.value);
     },
   },
@@ -215,11 +247,6 @@ $block: ".issue";
     margin: var(--gap-1-5) 0 var(--gap-0-5);
     font-size: var(--font-size-big);
     font-weight: 500;
-  }
-
-  &__info {
-    margin: 0 var(--gap) 0 auto;
-    color: var(--color-text-secondary);
   }
 
   &__description {

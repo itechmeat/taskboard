@@ -17,11 +17,11 @@ export default {
     progressMod() {
       const mod = "ui-battery";
 
-      if (this.progress >= 50 && this.progress < 80) {
+      if (this.progress >= 50 && this.progress < 75) {
         return `${mod}_warning`;
       }
 
-      if (this.progress >= 80 && this.progress < 100) {
+      if (this.progress >= 75 && this.progress < 100) {
         return `${mod}_primary`;
       }
 

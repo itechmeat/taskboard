@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <div v-if="statuses && statuses.length > 0">
-      <ui-button size="large" type="primary" to="/project"
-        >Open project</ui-button
-      >
+      <ui-button size="large" type="primary" to="/project">
+        Open project
+      </ui-button>
     </div>
 
     <div v-else class="home__options">
@@ -48,13 +48,13 @@ export default {
           order: (index + 1) * 10,
         });
       });
+
       await this.fetchStatuses();
 
       for (const issue of ISSUES) {
         const issueStatus = this.statuses.find(
           (status) => status.name === issue.status
         );
-
         const tasks = [];
 
         if (issue.tasks.length > 0) {
@@ -72,6 +72,7 @@ export default {
           name: issue.name,
           description: issue.description,
           statusId: issueStatus.id,
+          progress: calculateProgress(issue.tasks),
           tasks,
         });
       }
@@ -80,6 +81,24 @@ export default {
     },
   },
 };
+
+function calculateProgress(tasks) {
+  const progressList = [];
+
+  tasks.forEach((task) => {
+    if (task) {
+      if (task.isDone) {
+        progressList.push(100);
+        return;
+      }
+      progressList.push(Number(task.progress) || 0);
+    }
+  });
+
+  const sum = progressList.reduce((a, b) => a + b, 0);
+
+  return Math.ceil((sum / progressList.length) * 100) / 100;
+}
 </script>
 
 <style lang="scss">

@@ -8,9 +8,11 @@
       />
 
       <ui-menu class="board-column__menu">
+        <ui-menu-title>Actions</ui-menu-title>
         <ui-menu-item @click="addCard">Add Card</ui-menu-item>
         <ui-menu-item @click="deleteCards">Delete all cards</ui-menu-item>
         <ui-menu-item @click="deleteColumn">Delete this column</ui-menu-item>
+        <ui-menu-title>Links</ui-menu-title>
         <ui-menu-item to="/">Inner link</ui-menu-item>
         <ui-menu-item href="https://google.com">Outer link</ui-menu-item>
       </ui-menu>
@@ -31,7 +33,7 @@
         class="ui-menu__control"
         @click="addCard"
       >
-        Add another card
+        Add new issue
       </ui-button>
     </footer>
   </section>

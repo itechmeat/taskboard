@@ -91,6 +91,7 @@ export default {
 
     async save() {
       await this.saveTask(this.value);
+      this.$emit("update");
     },
 
     async remove() {

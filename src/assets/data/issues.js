@@ -3,6 +3,7 @@ export default [
     name: "Issue 1",
     description: "Some description of Issue",
     status: "Backlog",
+    progress: 0,
     tasks: [
       {
         name: "Create tasks",
@@ -20,6 +21,7 @@ export default [
     name: "Issue 2",
     description: "Some description of Issue",
     status: "Backlog",
+    progress: 0,
     tasks: [
       {
         name: "Create tasks 2",
@@ -37,6 +39,7 @@ export default [
     name: "Issue 3",
     description: "Some description of Issue",
     status: "In Progress",
+    progress: 0,
     tasks: [
       {
         name: "Create tasks 3",
