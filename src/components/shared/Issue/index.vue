@@ -1,9 +1,10 @@
 <template>
-  <article class="issue">
+  <article v-if="value" class="issue">
     <header class="issue__header">
-      <h2 class="issue__title" contenteditable>Some Title</h2>
+      <input :value="value.name" class="issue__title" @blur="handleNameBlur" />
 
-      <ui-menu class="issue__menu" title="Move to...">
+      <ui-menu class="issue__menu">
+        <ui-menu-title>Move to...</ui-menu-title>
         <ui-menu-item
           v-for="column in columns"
           :key="column.id"
@@ -11,16 +12,18 @@
         >
           {{ column.name }}
         </ui-menu-item>
+        <ui-menu-title>Actions</ui-menu-title>
+        <ui-menu-item @click="remove">Delete</ui-menu-item>
       </ui-menu>
     </header>
 
     <h3 class="issue__legend">Description</h3>
-    <div class="issue__description" contenteditable>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </div>
+    <div
+      class="issue__description"
+      contenteditable
+      @blur="handleDescriptionBlur"
+      v-html="value.description"
+    />
 
     <h3 class="issue__legend">
       Tasks
@@ -50,7 +53,10 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
 import Task from "@/components/shared/Issue/Task";
+import { clearText } from "@/libs/utils";
 
 export default {
   name: "Issue",
@@ -60,19 +66,87 @@ export default {
   },
 
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     columns: {
       type: Array,
       default: () => [],
     },
   },
 
+  data() {
+    return {
+      value: null,
+    };
+  },
+
+  computed: {
+    ...mapGetters("issues", {
+      issue: GET_ISSUE_BY_ID,
+    }),
+  },
+
+  watch: {
+    id: {
+      immediate: true,
+      async handler(val) {
+        if (!val) {
+          return;
+        }
+
+        let issue = this.issue(val);
+
+        if (!issue) {
+          await this.fetchIssues();
+          issue = this.issue(val);
+        }
+
+        this.value = issue;
+      },
+    },
+  },
+
   methods: {
-    addTask() {
-      console.log("addTask");
+    ...mapActions("issues", ["fetchIssues", "saveIssue", "deleteIssue"]),
+
+    async handleNameBlur(e) {
+      const newText = clearText(e.target.value);
+      if (newText === this.value.name) {
+        return;
+      }
+      await this.saveIssue({
+        ...this.value,
+        name: newText,
+      });
     },
 
-    changeStatus(id) {
-      console.log(id);
+    async changeStatus(id) {
+      await this.saveIssue({
+        ...this.value,
+        statusId: id,
+      });
+    },
+
+    async handleDescriptionBlur(e) {
+      const newText = clearText(e.target.innerHTML);
+      if (newText === this.value.name) {
+        return;
+      }
+      await this.saveIssue({
+        ...this.value,
+        description: newText,
+      });
+    },
+
+    async remove() {
+      await this.deleteIssue(this.id);
+      this.$emit("close");
+    },
+
+    addTask() {
+      console.log("addTask");
     },
   },
 };
@@ -97,7 +171,9 @@ $block: ".issue";
     flex: 1;
     margin: -4px calc(var(--gap-0-5) * -1);
     padding: 4px var(--gap-0-5);
+    border: none;
     border-radius: var(--border-raius);
+    background: none;
     font-size: var(--font-size-bigger);
     font-weight: 600;
 

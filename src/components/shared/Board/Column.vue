@@ -18,7 +18,7 @@
 
     <div class="board-column__list">
       <div class="board-column__space" />
-      <template v-for="card in cards">
+      <template v-for="card in currentIssues">
         <BoardCard :key="card.id" :value="card" />
         <div :key="card.id + 'Space'" class="board-column__space" />
       </template>
@@ -38,7 +38,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import { GET_ISSUES_BY_STATUS_ID } from "@/store/modules/issues/types";
 import BoardCard from "@/components/shared/Board/Card";
 import { clearText } from "@/libs/utils";
 
@@ -50,21 +51,29 @@ export default {
       type: Object,
       required: true,
     },
-    cards: {
-      type: Array,
-      default: () => [],
-    },
   },
 
   components: {
     BoardCard,
   },
 
+  computed: {
+    ...mapGetters("issues", {
+      issues: GET_ISSUES_BY_STATUS_ID,
+    }),
+
+    currentIssues() {
+      if (!this.value) {
+        return;
+      }
+      return this.issues(this.value.id);
+    },
+  },
+
   methods: {
-    ...mapActions("project", ["saveIssue"]),
+    ...mapActions("issues", ["saveIssue"]),
 
     handleNameBlur(e) {
-      console.log(e);
       const newText = clearText(e.target.value);
       if (newText === this.value.name) {
         return;
@@ -76,11 +85,13 @@ export default {
     },
 
     addCard() {
+      const name = prompt("Name of the Issue", "New Issue");
+
       this.saveIssue({
-        name: "Some Title Issue",
-        description: "And description",
+        name,
+        description: "",
+        statusId: this.value.id,
       });
-      console.info("addCard (not implemented)");
     },
 
     deleteCards() {

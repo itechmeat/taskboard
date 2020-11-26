@@ -10,7 +10,6 @@
     </ui-button>
 
     <div class="ui-menu__dropdown">
-      <div v-if="title" class="ui-menu__title">{{ title }}</div>
       <slot />
     </div>
   </div>
@@ -21,10 +20,6 @@ export default {
   name: "UiMenu",
 
   props: {
-    title: {
-      type: String,
-      default: undefined,
-    },
     position: {
       // Todo: premature implementation
       type: String,
@@ -125,14 +120,6 @@ $block: ".ui-menu";
       transform: translateY(0) scaleY(1);
       opacity: 1;
     }
-  }
-
-  &__title {
-    margin: 0 0 var(--gap-0-5);
-    padding: 0 var(--gap);
-    font-size: var(--font-size-base);
-    font-weight: 600;
-    text-align: center;
   }
 }
 </style>

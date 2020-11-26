@@ -5,7 +5,7 @@ export function getDB() {
   const db = new Dexie("estimator");
   db.version(1).stores({
     statuses: "++id",
-    issues: "++id",
+    issues: "++id,statusId",
     tasks: "++id,issueId",
   });
   return db;

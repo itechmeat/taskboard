@@ -11,23 +11,26 @@ const state = () => ({
 
 const getters = {
   [TYPES.GET_LOADING]: (state) => state.isLoading,
-  [TYPES.GET_ISSUES]: (state) => state.statuses,
+  [TYPES.GET_ISSUES]: (state) => state.issues,
   [TYPES.GET_ISSUE_BY_ID]: (state) => (id) => {
-    return state.statuses.find((status) => status.id === id);
+    return state.issues.find((issue) => issue.id === id);
+  },
+  [TYPES.GET_ISSUES_BY_STATUS_ID]: (state) => (id) => {
+    return state.issues.filter((issue) => issue.statusId === id);
   },
 };
 
 const actions = {
-  fetchIssues({ commit }) {
-    db.statuses.toArray((res) => {
+  async fetchIssues({ commit }) {
+    await db.issues.toArray((res) => {
       commit(TYPES.SET_ISSUES, res);
     });
   },
 
-  saveIssue({ dispatch }, issue) {
+  async saveIssue({ dispatch }, issue) {
     const newIssue = mergeRequiredKeys(issue);
 
-    db.issues
+    await db.issues
       .put(newIssue)
       .then(() => {
         dispatch("fetchIssues");
@@ -37,6 +40,11 @@ const actions = {
         console.error("createProject: " + error);
       });
   },
+
+  async deleteIssue({ dispatch }, id) {
+    await db.issues.delete(id);
+    dispatch("fetchIssues");
+  },
 };
 
 const mutations = {
@@ -45,7 +53,7 @@ const mutations = {
   },
 
   [TYPES.SET_ISSUES]: (state, payload) => {
-    state.statuses = payload;
+    state.issues = payload;
   },
 };
 

@@ -18,16 +18,16 @@ const getters = {
 };
 
 const actions = {
-  fetchStatuses({ commit }) {
-    db.statuses.toArray((res) => {
+  async fetchStatuses({ commit }) {
+    await db.statuses.toArray((res) => {
       commit(TYPES.SET_STATUSES, res);
     });
   },
 
-  saveStatus({ dispatch }, status) {
+  async saveStatus({ dispatch }, status) {
     const newStatus = mergeRequiredKeys(status);
 
-    db.statuses
+    await db.statuses
       .put(newStatus)
       .then(() => {
         dispatch("fetchStatuses");
@@ -38,8 +38,8 @@ const actions = {
       });
   },
 
-  deleteStatus({ dispatch }, id) {
-    db.statuses.delete(id);
+  async deleteStatus({ dispatch }, id) {
+    await db.statuses.delete(id);
     dispatch("fetchStatuses");
   },
 };
