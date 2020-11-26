@@ -39,6 +39,7 @@ export default {
 $block: ".ui-battery";
 
 #{$block} {
+  flex: 0 0 auto;
   display: inline-block;
   position: relative;
   width: 12px;
