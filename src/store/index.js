@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import statuses from "./modules/statuses";
 import issues from "./modules/issues";
+import tasks from "./modules/tasks";
 
 Vue.use(Vuex);
 
@@ -12,5 +13,6 @@ export default new Vuex.Store({
   modules: {
     statuses,
     issues,
+    tasks,
   },
 });

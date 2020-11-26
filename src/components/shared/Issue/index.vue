@@ -1,7 +1,7 @@
 <template>
   <article v-if="value" class="issue">
     <header class="issue__header">
-      <input :value="value.name" class="issue__title" @blur="handleNameBlur" />
+      <input v-model="value.name" class="issue__title" @blur="save" />
 
       <ui-menu class="issue__menu">
         <ui-menu-title>Move to...</ui-menu-title>
@@ -32,9 +32,9 @@
     </h3>
     <div class="issue__tasks">
       <div class="issue__space" />
-      <template v-for="task in 10">
+      <template v-for="task in value.tasks">
         <div :key="task" class="issue__task">
-          <Task :value="task" />
+          <Task :id="task" @delete="removeTask" />
         </div>
         <div :key="task + 'Space'" class="issue__space" />
       </template>
@@ -45,7 +45,7 @@
           class="ui-menu__control"
           @click="addTask"
         >
-          Add another task
+          Add new task
         </ui-button>
       </li>
     </div>
@@ -110,16 +110,10 @@ export default {
 
   methods: {
     ...mapActions("issues", ["fetchIssues", "saveIssue", "deleteIssue"]),
+    ...mapActions("tasks", ["fetchTasks", "saveTask", "deleteTask"]),
 
-    async handleNameBlur(e) {
-      const newText = clearText(e.target.value);
-      if (newText === this.value.name) {
-        return;
-      }
-      await this.saveIssue({
-        ...this.value,
-        name: newText,
-      });
+    async save() {
+      await this.saveIssue(this.value);
     },
 
     async changeStatus(id) {
@@ -141,12 +135,39 @@ export default {
     },
 
     async remove() {
+      if (this.value.tasks.length > 0) {
+        this.value.tasks.forEach((id) => {
+          this.deleteTask(id);
+        });
+      }
       await this.deleteIssue(this.id);
       this.$emit("close");
     },
 
-    addTask() {
-      console.log("addTask");
+    async addTask() {
+      const name = prompt("Name of the Task", "New Task");
+
+      const taskId = await this.saveTask({
+        name,
+        progress: 0,
+        isDone: false,
+      });
+
+      const tasks = this.value.tasks || [];
+      tasks.push(taskId);
+
+      await this.saveIssue({
+        ...this.value,
+        tasks,
+      });
+
+      await this.fetchIssues();
+    },
+
+    async removeTask(id) {
+      const index = this.value.tasks.findIndex((task) => task === id);
+      this.value.tasks.splice(index, 1);
+      await this.saveIssue(this.value);
     },
   },
 };

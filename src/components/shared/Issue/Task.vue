@@ -1,13 +1,16 @@
 <template>
-  <div class="task" :class="{ task_open: isOpen }">
+  <div v-if="value" class="task" :class="{ task_open: isOpen }">
     <div class="task__main">
       <div class="task__handler"></div>
       <div class="task__check">
-        <input v-model="isDone" type="checkbox" />
+        <input v-model="value.isDone" type="checkbox" @change="save" />
       </div>
-      <div class="task__name" contenteditable>Task</div>
-      <div class="task__progress" :class="{ task__progress_hidden: isDone }">
-        {{ progress }}%
+      <input v-model="value.name" class="task__name" @blur="save" />
+      <div
+        class="task__progress"
+        :class="{ task__progress_hidden: value.isDone }"
+      >
+        {{ value.progress }}%
       </div>
       <div class="task__actions">
         <button class="task__control" @click="isOpen = !isOpen" />
@@ -16,19 +19,20 @@
 
     <div class="task__data">
       <div class="task__info">
-        <ui-button type="clear" size="tiny" @click="remove"
-          >Remove this task</ui-button
-        >
+        <ui-button type="clear" size="tiny" @click="remove">
+          Remove this task
+        </ui-button>
       </div>
       <div class="task__progressor">
         <input
-          v-model="progress"
-          :disabled="isDone"
+          v-model="value.progress"
+          :disabled="value.isDone"
           class="task__range"
           type="range"
           min="0"
           max="100"
           step="1"
+          @change="save"
         />
       </div>
     </div>
@@ -36,20 +40,62 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
+
 export default {
   name: "IssueTask",
 
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+
   data() {
     return {
+      value: null,
       isOpen: false,
-      isDone: false,
-      progress: 40,
     };
   },
 
+  computed: {
+    ...mapGetters("tasks", {
+      task: GET_TASK_BY_ID,
+    }),
+  },
+
+  watch: {
+    id: {
+      immediate: true,
+      async handler(val) {
+        if (!val) {
+          return;
+        }
+
+        let issue = this.task(val);
+
+        if (!issue) {
+          await this.fetchTasks();
+          issue = this.task(val);
+        }
+
+        this.value = issue;
+      },
+    },
+  },
+
   methods: {
-    remove() {
-      console.log("remove");
+    ...mapActions("tasks", ["fetchTasks", "saveTask", "deleteTask"]),
+
+    async save() {
+      await this.saveTask(this.value);
+    },
+
+    async remove() {
+      await this.deleteTask(this.id);
+      this.$emit("delete", this.id);
     },
   },
 };
@@ -107,7 +153,9 @@ $block: ".task";
   &__name {
     margin: 0 -4px;
     padding: 4px;
+    border: none;
     border-radius: var(--border-raius);
+    background: none;
 
     &:focus {
       background: var(--color-bg-accent);

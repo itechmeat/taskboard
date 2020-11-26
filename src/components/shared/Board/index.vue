@@ -105,11 +105,13 @@ export default {
   created() {
     this.fetchStatuses();
     this.fetchIssues();
+    this.fetchTasks();
   },
 
   methods: {
     ...mapActions("statuses", ["fetchStatuses", "saveStatus", "deleteStatus"]),
     ...mapActions("issues", ["fetchIssues"]),
+    ...mapActions("tasks", ["fetchTasks"]),
 
     add() {
       const name = prompt("Name of the Column", "New Column");
