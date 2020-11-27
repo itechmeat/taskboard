@@ -5,7 +5,11 @@
         <slot />
       </div>
 
-      <button class="ui-modal__close" @click.prevent="close" />
+      <button
+        class="ui-modal__close"
+        aria-label="Close"
+        @click.prevent="close"
+      />
     </div>
   </div>
 </template>

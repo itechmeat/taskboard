@@ -1,11 +1,13 @@
 <template>
   <section v-if="value" class="board-column">
     <header class="board-column__header">
-      <input
-        :value="value.name"
-        class="board-column__name"
-        @blur="handleNameBlur"
-      />
+      <label>
+        <input
+          :value="value.name"
+          class="board-column__name"
+          @blur="handleNameBlur"
+        />
+      </label>
 
       <ui-menu class="board-column__menu">
         <ui-menu-title>Actions</ui-menu-title>

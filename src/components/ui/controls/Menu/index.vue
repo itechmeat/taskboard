@@ -4,6 +4,7 @@
       v-click-outside="closeMenu"
       type="clear"
       class="ui-menu__control"
+      aria-label="Menu"
       @click="handleClick"
     >
       <span class="ui-menu__icon" />
