@@ -14,6 +14,7 @@
       <input
         v-model="value.name"
         class="task__name"
+        placeholder="Enter name of the task"
         @focus="focus"
         @blur="save"
       />

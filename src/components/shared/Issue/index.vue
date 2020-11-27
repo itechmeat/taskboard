@@ -1,7 +1,12 @@
 <template>
   <article v-if="value" class="issue">
     <header class="issue__header">
-      <input v-model="value.name" class="issue__title" @blur="save" />
+      <input
+        v-model="value.name"
+        class="issue__title"
+        placeholder="Enter name of the issue"
+        @blur="save"
+      />
 
       <ui-menu class="issue__menu">
         <ui-menu-title>Move to...</ui-menu-title>
@@ -21,6 +26,7 @@
     <div
       class="issue__description"
       contenteditable
+      :data-placeholder="description"
       @blur="handleDescriptionBlur"
       v-html="value.description"
     />
@@ -107,6 +113,16 @@ export default {
     ...mapGetters("tasks", {
       task: GET_TASK_BY_ID,
     }),
+
+    description() {
+      if (
+        !this.value ||
+        (this.value.description && this.value.description.length > 0)
+      ) {
+        return;
+      }
+      return "Enter the description for the Issue";
+    },
   },
 
   watch: {
@@ -157,9 +173,10 @@ export default {
 
     async handleDescriptionBlur(e) {
       const newText = clearText(e.target.innerHTML);
-      if (newText === this.value.name) {
+      if (newText === this.value.description) {
         return;
       }
+      this.value.description = newText;
       await this.saveIssue({
         ...this.value,
         description: newText,
@@ -373,13 +390,29 @@ $block: ".issue";
   }
 
   &__description {
+    position: relative;
     margin: calc(var(--gap) - 4px) calc(var(--gap-0-5) * -1) -4px;
     padding: 4px var(--gap-0-5);
     border-radius: var(--border-raius);
 
+    &::before {
+      content: attr(data-placeholder);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: inherit;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
     &:focus {
       background: var(--color-bg-accent);
       outline: none;
+
+      &::before {
+        opacity: 0;
+      }
     }
   }
 

@@ -5,6 +5,7 @@
         <input
           :value="value.name"
           class="board-column__name"
+          placeholder="Enter name"
           @blur="handleNameBlur"
         />
       </label>

@@ -202,7 +202,7 @@ export default [
     tasks: [
       {
         name: "Add placeholders for empty parts of a content",
-        progress: 0,
+        progress: 20,
         isDone: false,
       },
       {
