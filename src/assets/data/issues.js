@@ -263,4 +263,27 @@ export default [
       },
     ],
   },
+  {
+    name: "Add system messages",
+    description: "",
+    status: "Backlog",
+    progress: 0,
+    tasks: [
+      {
+        name: "Add Page 404",
+        progress: 0,
+        isDone: false,
+      },
+      {
+        name: "Add validation messages",
+        progress: 0,
+        isDone: false,
+      },
+      {
+        name: "Add messages for API",
+        progress: 0,
+        isDone: false,
+      },
+    ],
+  },
 ];

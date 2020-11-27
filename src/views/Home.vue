@@ -24,8 +24,9 @@
       </ui-button>
 
       <p>
-        I recommend that you generate a demo project, which shows the structure
-        of the project in a rather informative way.
+        All issues (and tasks in popups) in the demo project are real for this
+        challenge. Here you can see what has already been done, what is in
+        progress, and what I will probably finish later.
       </p>
     </div>
   </div>
@@ -107,6 +108,10 @@ export default {
       await this.clearDB();
       await this.fetchStatuses();
     },
+  },
+
+  metaInfo: {
+    title: "Homepage",
   },
 };
 

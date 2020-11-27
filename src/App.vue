@@ -13,6 +13,19 @@ export default {
   components: {
     TheHeader,
   },
+
+  metaInfo: {
+    title: "Just another task tracker",
+    titleTemplate: "%s | TaskBoard",
+    meta: [
+      { charset: "utf-8" },
+      {
+        vmid: "description",
+        name: "description",
+        content: "Just another task tracker",
+      },
+    ],
+  },
 };
 </script>
 

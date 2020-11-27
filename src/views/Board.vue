@@ -11,5 +11,9 @@ export default {
   components: {
     Board,
   },
+
+  metaInfo: {
+    title: "Project",
+  },
 };
 </script>
