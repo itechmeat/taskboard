@@ -8,6 +8,7 @@ import MenuTitle from "./components/ui/controls/Menu/Title.vue";
 import Modal from "./components/ui/wrappers/Modal.vue";
 
 import Battery from "./components/ui/elements/Battery.vue";
+import Notice from "./components/ui/elements/Notice.vue";
 
 Vue.component("ui-button", Button);
 Vue.component("ui-menu", Menu);
@@ -17,3 +18,4 @@ Vue.component("ui-menu-title", MenuTitle);
 Vue.component("ui-modal", Modal);
 
 Vue.component("ui-battery", Battery);
+Vue.component("ui-notice", Notice);

@@ -23,6 +23,16 @@
         @close="closeModal"
       />
     </ui-modal>
+
+    <ui-notice
+      can-close
+      type="primary"
+      :visible="isNoticeVisible"
+      @close="closeNotice"
+    >
+      Please open the "Add Drag&Drop for entities" Issue to test changing and
+      Drag&Drop of tasks.
+    </ui-notice>
   </main>
 </template>
 
@@ -43,6 +53,7 @@ export default {
   data() {
     return {
       isModalVisible: false,
+      isNoticeVisible: false,
       visibleIssueId: null,
     };
   },
@@ -86,10 +97,27 @@ export default {
     this.fetchTasks();
   },
 
+  mounted() {
+    this.showNotice();
+  },
+
   methods: {
     ...mapActions("statuses", ["fetchStatuses", "saveStatus", "deleteStatus"]),
     ...mapActions("issues", ["fetchIssues"]),
     ...mapActions("tasks", ["fetchTasks"]),
+
+    showNotice() {
+      if (!localStorage.closedTaskNotice) {
+        setTimeout(() => {
+          this.isNoticeVisible = true;
+        }, 3000);
+      }
+    },
+
+    closeNotice() {
+      this.isNoticeVisible = false;
+      localStorage.closedTaskNotice = true;
+    },
 
     add() {
       const name = prompt("Name of the Column", "New Column");

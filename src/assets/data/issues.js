@@ -275,12 +275,35 @@ export default [
         isDone: false,
       },
       {
+        name: "Add notifications",
+        progress: 70,
+        isDone: false,
+      },
+      {
         name: "Add validation messages",
         progress: 0,
         isDone: false,
       },
       {
         name: "Add messages for API",
+        progress: 0,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    name: "Change Vue2 to Vue3",
+    description: "",
+    status: "Backlog",
+    progress: 0,
+    tasks: [
+      {
+        name: "Change Vue version",
+        progress: 0,
+        isDone: false,
+      },
+      {
+        name: "Update components to Composition API",
         progress: 0,
         isDone: false,
       },
