@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import system from "./modules/system";
-import statuses from "./modules/statuses";
+import tracks from "./modules/tracks";
 import issues from "./modules/issues";
 import tasks from "./modules/tasks";
 
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     system,
-    statuses,
+    tracks,
     issues,
     tasks,
   },

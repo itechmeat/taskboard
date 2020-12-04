@@ -2,7 +2,7 @@
   <main class="board" @dragover.prevent @drop.stop.prevent="handleDrop">
     <ColumnGap :index="0" :active="newIndex === 0" :visible="isDragActive" />
 
-    <template v-for="(column, index) in statuses">
+    <template v-for="(column, index) in tracks">
       <BoardColumn
         :key="column.id"
         :value="column"
@@ -27,7 +27,7 @@
       <Issue
         v-if="visibleIssueId"
         :id="visibleIssueId"
-        :columns="statuses"
+        :columns="tracks"
         @close="closeModal"
       />
     </ui-modal>
@@ -46,7 +46,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { GET_STATUSES } from "@/store/modules/statuses/types";
+import { GET_TRACKS } from "@/store/modules/tracks/types";
 import BoardColumn from "@/components/shared/Board/Column";
 import Issue from "@/components/shared/Issue";
 import ColumnGap from "@/components/shared/Board/ColumnGap";
@@ -66,25 +66,25 @@ export default {
       isNoticeVisible: false,
       visibleIssueId: null,
       isDropZoneActive: false,
-      StatusIndex: null,
+      TrackIndex: null,
       newIndex: null,
       isDragActive: false,
     };
   },
 
   computed: {
-    ...mapGetters("statuses", {
-      statuses: GET_STATUSES,
+    ...mapGetters("tracks", {
+      tracks: GET_TRACKS,
     }),
 
     lastOrder() {
-      if (!this.statuses || this.statuses.length === 0) {
+      if (!this.tracks || this.tracks.length === 0) {
         return 0;
       }
 
       return Math.max.apply(
         null,
-        this.statuses.map((status) => status.order)
+        this.tracks.map((track) => track.order)
       );
     },
   },
@@ -117,7 +117,7 @@ export default {
   },
 
   created() {
-    this.fetchStatuses();
+    this.fetchTracks();
     this.fetchIssues();
     this.fetchTasks();
   },
@@ -127,10 +127,10 @@ export default {
   },
 
   methods: {
-    ...mapActions("statuses", [
-      "fetchStatuses",
-      "saveStatus",
-      "deleteStatus",
+    ...mapActions("tracks", [
+      "fetchTracks",
+      "saveTrack",
+      "deleteTrack",
       "updateOrders",
     ]),
     ...mapActions("issues", ["fetchIssues"]),
@@ -190,11 +190,11 @@ export default {
 
     handleDrag(event, state) {
       this.isDragActive = state;
-      let StatusIndex;
+      let TrackIndex;
       if (state) {
-        StatusIndex = Number(event.target.dataset.column);
+        TrackIndex = Number(event.target.dataset.column);
       }
-      this.StatusIndex = StatusIndex;
+      this.TrackIndex = TrackIndex;
     },
 
     handleDropZone(event, state) {
@@ -209,24 +209,24 @@ export default {
     },
 
     async handleDrop() {
-      console.log("handleDrop", this.newIndex, this.StatusIndex);
+      console.log("handleDrop", this.newIndex, this.TrackIndex);
       if (this.newIndex !== null) {
-        if (this.StatusIndex || this.StatusIndex === 0) {
-          const statuses = [...this.statuses];
-          const task = statuses[this.StatusIndex];
-          if (this.StatusIndex < this.newIndex) {
-            statuses.splice(this.newIndex, 0, task);
-            statuses.splice(this.StatusIndex, 1);
+        if (this.TrackIndex || this.TrackIndex === 0) {
+          const tracks = [...this.tracks];
+          const task = tracks[this.TrackIndex];
+          if (this.TrackIndex < this.newIndex) {
+            tracks.splice(this.newIndex, 0, task);
+            tracks.splice(this.TrackIndex, 1);
           } else {
-            statuses.splice(this.StatusIndex, 1);
-            statuses.splice(this.newIndex, 0, task);
+            tracks.splice(this.TrackIndex, 1);
+            tracks.splice(this.newIndex, 0, task);
           }
-          await this.updateOrders(statuses);
+          await this.updateOrders(tracks);
         }
       }
 
       this.$nextTick(() => {
-        this.StatusIndex = null;
+        this.TrackIndex = null;
         this.newIndex = null;
         this.isDropZoneActive = false;
       });
@@ -248,18 +248,18 @@ export default {
     add() {
       const name = prompt("Name of the Column", "New Column");
 
-      this.saveStatus({
+      this.saveTrack({
         name,
         order: this.lastOrder + 10,
       });
     },
 
     save(val) {
-      this.saveStatus(val);
+      this.saveTrack(val);
     },
 
     remove(id) {
-      this.deleteStatus(id);
+      this.deleteTrack(id);
     },
 
     closeModal() {

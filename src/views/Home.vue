@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div
-      v-if="statuses && statuses.length > 0 && !isGenerating"
+      v-if="tracks && tracks.length > 0 && !isGenerating"
       class="home__options"
     >
       <ui-button size="large" type="primary" to="/project">
@@ -34,16 +34,16 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { GET_STATUSES } from "@/store/modules/statuses/types";
-import STATUSES from "@/assets/data/statuses";
+import { GET_TRACKS } from "@/store/modules/tracks/types";
+import TRACKS from "@/assets/data/tracks";
 import ISSUES from "@/assets/data/issues";
 
 export default {
   name: "HomeView",
 
   computed: {
-    ...mapGetters("statuses", {
-      statuses: GET_STATUSES,
+    ...mapGetters("tracks", {
+      tracks: GET_TRACKS,
     }),
   },
 
@@ -54,29 +54,29 @@ export default {
   },
 
   created() {
-    this.fetchStatuses();
+    this.fetchTracks();
   },
 
   methods: {
     ...mapActions("system", ["clearDB"]),
-    ...mapActions("statuses", ["fetchStatuses", "saveStatus"]),
+    ...mapActions("tracks", ["fetchTracks", "saveTrack"]),
     ...mapActions("issues", ["saveIssue"]),
     ...mapActions("tasks", ["saveTask"]),
 
     async generate() {
       this.isGenerating = true;
-      STATUSES.forEach((status, index) => {
-        this.saveStatus({
-          name: status,
+      TRACKS.forEach((track, index) => {
+        this.saveTrack({
+          name: track,
           order: (index + 1) * 10,
         });
       });
 
-      await this.fetchStatuses();
+      await this.fetchTracks();
 
       for (const issue of ISSUES) {
-        const issueStatus = this.statuses.find(
-          (status) => status.name === issue.status
+        const issueTrack = this.tracks.find(
+          (track) => track.name === issue.track
         );
         const tasks = [];
 
@@ -94,7 +94,7 @@ export default {
         await this.saveIssue({
           name: issue.name,
           description: issue.description,
-          statusId: issueStatus.id,
+          trackId: issueTrack.id,
           progress: calculateProgress(issue.tasks),
           tasks,
         });
@@ -106,7 +106,7 @@ export default {
 
     async remove() {
       await this.clearDB();
-      await this.fetchStatuses();
+      await this.fetchTracks();
     },
   },
 

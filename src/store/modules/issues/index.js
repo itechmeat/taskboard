@@ -15,8 +15,8 @@ const getters = {
   [TYPES.GET_ISSUE_BY_ID]: (state) => (id) => {
     return state.issues.find((issue) => issue.id === id);
   },
-  [TYPES.GET_ISSUES_BY_STATUS_ID]: (state) => (id) => {
-    return state.issues.filter((issue) => issue.statusId === id);
+  [TYPES.GET_ISSUES_BY_TRACK_ID]: (state) => (id) => {
+    return state.issues.filter((issue) => issue.trackId === id);
   },
 };
 

@@ -13,7 +13,7 @@
         <ui-menu-item
           v-for="column in columns"
           :key="column.id"
-          @click="changeStatus(column.id)"
+          @click="changeTrack(column.id)"
         >
           {{ column.name }}
         </ui-menu-item>
@@ -164,10 +164,10 @@ export default {
       await this.saveIssue(this.value);
     },
 
-    async changeStatus(id) {
+    async changeTrack(id) {
       await this.saveIssue({
         ...this.value,
-        statusId: id,
+        trackId: id,
       });
     },
 

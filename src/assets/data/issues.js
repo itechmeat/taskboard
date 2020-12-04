@@ -2,7 +2,7 @@ export default [
   {
     name: "Create a layout and design all the required components",
     description: "No need to make the connection to the <b>data store</b>.",
-    status: "Done",
+    track: "Done",
     progress: 0,
     tasks: [
       {
@@ -50,11 +50,11 @@ export default [
   {
     name: "Implement CRUD for all entities",
     description: "At the first stage, it is permissible to use an IndexedDB",
-    status: "Done",
+    track: "Done",
     progress: 0,
     tasks: [
       {
-        name: "Implement CRUD for statuses (columns)",
+        name: "Implement CRUD for tracks (columns)",
         progress: 100,
         isDone: true,
       },
@@ -73,7 +73,7 @@ export default [
   {
     name: "Improve interface behavior when deleting entities",
     description: "",
-    status: "To Do",
+    track: "To Do",
     progress: 0,
     tasks: [
       {
@@ -82,18 +82,18 @@ export default [
         isDone: false,
       },
       {
-        name: "Make the default status for placing unsorted Issues",
+        name: "Make the default track for placing unsorted Issues",
         progress: 0,
         isDone: false,
       },
       {
         name:
-          "Set first status as default, change the default status when delete it",
+          "Set first track as default, change the default track when delete it",
         progress: 0,
         isDone: false,
       },
       {
-        name: "Move all issues from deleted status to default status",
+        name: "Move all issues from deleted track to default track",
         progress: 0,
         isDone: false,
       },
@@ -107,7 +107,7 @@ export default [
   {
     name: "Create a progress calculator",
     description: "",
-    status: "To Do",
+    track: "To Do",
     progress: 0,
     tasks: [
       {
@@ -125,7 +125,7 @@ export default [
   {
     name: "Add Drag&Drop for entities",
     description: "",
-    status: "To Do",
+    track: "To Do",
     progress: 0,
     tasks: [
       {
@@ -139,7 +139,7 @@ export default [
         isDone: false,
       },
       {
-        name: "Add Drag&Drop for Statuses",
+        name: "Add Drag&Drop for Tracks",
         progress: 100,
         isDone: true,
       },
@@ -148,7 +148,7 @@ export default [
   {
     name: "Create the Demo of the project",
     description: "",
-    status: "Done",
+    track: "Done",
     progress: 0,
     tasks: [
       {
@@ -166,7 +166,7 @@ export default [
   {
     name: "Add more Data to an Issue",
     description: "",
-    status: "In Progress",
+    track: "In Progress",
     progress: 0,
     tasks: [
       {
@@ -184,7 +184,7 @@ export default [
   {
     name: "Make refactoring",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {
@@ -197,7 +197,7 @@ export default [
   {
     name: "Make the design improvement",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {
@@ -230,7 +230,7 @@ export default [
   {
     name: "Add product testing",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {
@@ -248,7 +248,7 @@ export default [
   {
     name: "Make integration with AWS or Firebase",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {
@@ -266,7 +266,7 @@ export default [
   {
     name: "Add system messages",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {
@@ -294,7 +294,7 @@ export default [
   {
     name: "Change Vue2 to Vue3",
     description: "",
-    status: "Backlog",
+    track: "Backlog",
     progress: 0,
     tasks: [
       {

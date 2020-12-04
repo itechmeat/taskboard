@@ -9,10 +9,12 @@
       <label>
         <input
           :value="value.name"
+          ref="columnName"
           class="board-column__name"
           placeholder="Enter name"
           @focus="focus"
           @blur="save"
+          @keyup.enter="enter"
         />
       </label>
 
@@ -50,7 +52,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { GET_ISSUES_BY_STATUS_ID } from "@/store/modules/issues/types";
+import { GET_ISSUES_BY_TRACK_ID } from "@/store/modules/issues/types";
 import BoardCard from "@/components/shared/Board/Card";
 import { clearText } from "@/libs/utils";
 
@@ -80,7 +82,7 @@ export default {
 
   computed: {
     ...mapGetters("issues", {
-      issues: GET_ISSUES_BY_STATUS_ID,
+      issues: GET_ISSUES_BY_TRACK_ID,
     }),
 
     currentIssues() {
@@ -110,13 +112,17 @@ export default {
       });
     },
 
+    enter() {
+      this.$refs.columnName.blur();
+    },
+
     addCard() {
       const name = prompt("Name of the Issue", "New Issue");
 
       this.saveIssue({
         name,
         description: "",
-        statusId: this.value.id,
+        trackId: this.value.id,
         tasks: [],
       });
     },

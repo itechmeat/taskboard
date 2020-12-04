@@ -6,31 +6,31 @@ const db = getDB();
 
 const state = () => ({
   isLoading: false,
-  statuses: [],
+  tracks: [],
 });
 
 const getters = {
   [TYPES.GET_LOADING]: (state) => state.isLoading,
-  [TYPES.GET_STATUSES]: (state) => state.statuses,
-  [TYPES.GET_STATUS_BY_ID]: (state) => (id) => {
-    return state.statuses.find((status) => status.id === id);
+  [TYPES.GET_TRACKS]: (state) => state.tracks,
+  [TYPES.GET_TRACK_BY_ID]: (state) => (id) => {
+    return state.tracks.find((track) => track.id === id);
   },
 };
 
 const actions = {
-  async fetchStatuses({ commit }) {
-    await db.statuses.toArray((res) => {
-      commit(TYPES.SET_STATUSES, res);
+  async fetchTracks({ commit }) {
+    await db.tracks.toArray((res) => {
+      commit(TYPES.SET_TRACKS, res);
     });
   },
 
-  async saveStatus({ dispatch }, status) {
-    const newStatus = mergeRequiredKeys(status);
+  async saveTrack({ dispatch }, track) {
+    const newTrack = mergeRequiredKeys(track);
 
-    await db.statuses
-      .put(newStatus)
+    await db.tracks
+      .put(newTrack)
       .then(() => {
-        dispatch("fetchStatuses");
+        dispatch("fetchTracks");
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
@@ -38,9 +38,9 @@ const actions = {
       });
   },
 
-  async updateOrders({ dispatch }, statuses) {
-    for (const [index, item] of statuses.entries()) {
-      await db.statuses
+  async updateOrders({ dispatch }, tracks) {
+    for (const [index, item] of tracks.entries()) {
+      await db.tracks
         .put({
           ...item,
           order: (index + 1) * 10,
@@ -51,12 +51,12 @@ const actions = {
         });
     }
 
-    dispatch("fetchStatuses");
+    dispatch("fetchTracks");
   },
 
-  async deleteStatus({ dispatch }, id) {
-    await db.statuses.delete(id);
-    dispatch("fetchStatuses");
+  async deleteTrack({ dispatch }, id) {
+    await db.tracks.delete(id);
+    dispatch("fetchTracks");
   },
 };
 
@@ -65,11 +65,11 @@ const mutations = {
     state.isLoading = payload;
   },
 
-  [TYPES.SET_STATUSES]: (state, payload) => {
+  [TYPES.SET_TRACKS]: (state, payload) => {
     payload.sort((a, b) => {
       return a.order - b.order;
     });
-    state.statuses = payload;
+    state.tracks = payload;
   },
 };
 
