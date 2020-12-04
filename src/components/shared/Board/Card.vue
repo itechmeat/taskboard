@@ -6,14 +6,57 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
+import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
+
 export default {
   name: "BoardCard",
 
   props: {
-    value: {
-      type: Object,
+    id: {
+      type: String,
       required: true,
     },
+  },
+
+  data() {
+    return {
+      value: null,
+    };
+  },
+
+  computed: {
+    ...mapGetters("issues", {
+      issue: GET_ISSUE_BY_ID,
+    }),
+    ...mapGetters("tasks", {
+      task: GET_TASK_BY_ID,
+    }),
+  },
+
+  watch: {
+    id: {
+      immediate: true,
+      async handler(val) {
+        if (!val) {
+          return;
+        }
+
+        let issue = this.issue(val);
+
+        if (!issue) {
+          await this.fetchIssues();
+          issue = this.issue(val);
+        }
+
+        this.value = issue;
+      },
+    },
+  },
+
+  methods: {
+    ...mapActions("issues", ["fetchIssues"]),
   },
 };
 </script>

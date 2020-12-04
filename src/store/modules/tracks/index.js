@@ -58,6 +58,30 @@ const actions = {
     await db.tracks.delete(id);
     dispatch("fetchTracks");
   },
+
+  async moveIssue({ getters, dispatch }, moving) {
+    const oldTrack = getters[TYPES.GET_TRACK_BY_ID](moving.oldTrackId);
+    const oldTrackIssues = [...oldTrack.issues];
+    const oldTrackIssueIndex = oldTrack.issues.findIndex(
+      (item) => item === moving.issueId
+    );
+
+    if (oldTrackIssueIndex !== -1) {
+      oldTrackIssues.splice(oldTrackIssueIndex, 1);
+      dispatch("saveTrack", {
+        ...oldTrack,
+        issues: oldTrackIssues,
+      });
+    }
+
+    const newTrack = getters[TYPES.GET_TRACK_BY_ID](moving.newTrackId);
+    const newTrackIssues = [...newTrack.issues];
+    newTrackIssues.unshift(moving.issueId);
+    dispatch("saveTrack", {
+      ...newTrack,
+      issues: newTrackIssues,
+    });
+  },
 };
 
 const mutations = {

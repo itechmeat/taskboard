@@ -28,17 +28,37 @@ const actions = {
   },
 
   async saveIssue({ dispatch }, issue) {
+    let oldTrackId = issue.oldTrackId;
+    let issueId = issue.id;
+
+    if (oldTrackId) {
+      delete issue.oldTrackId;
+    }
+
     const newIssue = mergeRequiredKeys(issue);
 
     await db.issues
       .put(newIssue)
-      .then(() => {
+      .then((res) => {
+        issueId = res;
         dispatch("fetchIssues");
       })
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error("createProject: " + error);
       });
+
+    if (oldTrackId) {
+      dispatch(
+        "tracks/moveIssue",
+        {
+          issueId,
+          oldTrackId,
+          newTrackId: issue.trackId,
+        },
+        { root: true }
+      );
+    }
   },
 
   async deleteIssue({ dispatch }, id) {

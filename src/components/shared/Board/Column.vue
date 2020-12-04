@@ -31,9 +31,9 @@
 
     <div class="board-column__list">
       <div class="board-column__space" />
-      <template v-for="card in currentIssues">
-        <BoardCard :key="card.id" :value="card" />
-        <div :key="card.id + 'Space'" class="board-column__space" />
+      <template v-for="issue in value.issues">
+        <BoardCard :key="issue" :id="issue" />
+        <div :key="issue + 'Space'" class="board-column__space" />
       </template>
     </div>
 
@@ -52,7 +52,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { GET_ISSUES_BY_TRACK_ID } from "@/store/modules/issues/types";
+import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
 import BoardCard from "@/components/shared/Board/Card";
 import { clearText } from "@/libs/utils";
 
@@ -82,15 +82,8 @@ export default {
 
   computed: {
     ...mapGetters("issues", {
-      issues: GET_ISSUES_BY_TRACK_ID,
+      issue: GET_ISSUE_BY_ID,
     }),
-
-    currentIssues() {
-      if (!this.value) {
-        return;
-      }
-      return this.issues(this.value.id);
-    },
   },
 
   methods: {

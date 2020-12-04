@@ -165,10 +165,20 @@ export default {
     },
 
     async changeTrack(id) {
+      const oldId = this.value.trackId;
+
+      if (id === oldId) {
+        return;
+      }
+
       await this.saveIssue({
         ...this.value,
         trackId: id,
+        oldTrackId: oldId,
       });
+
+      await this.fetchIssues();
+      this.value = this.issue(this.value.id);
     },
 
     async handleDescriptionBlur(e) {

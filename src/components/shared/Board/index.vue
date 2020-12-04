@@ -209,7 +209,6 @@ export default {
     },
 
     async handleDrop() {
-      console.log("handleDrop", this.newIndex, this.TrackIndex);
       if (this.newIndex !== null) {
         if (this.TrackIndex || this.TrackIndex === 0) {
           const tracks = [...this.tracks];

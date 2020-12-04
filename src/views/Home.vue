@@ -34,6 +34,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { GET_ISSUES } from "@/store/modules/issues/types";
 import { GET_TRACKS } from "@/store/modules/tracks/types";
 import TRACKS from "@/assets/data/tracks";
 import ISSUES from "@/assets/data/issues";
@@ -42,6 +43,9 @@ export default {
   name: "HomeView",
 
   computed: {
+    ...mapGetters("issues", {
+      issues: GET_ISSUES,
+    }),
     ...mapGetters("tracks", {
       tracks: GET_TRACKS,
     }),
@@ -60,7 +64,7 @@ export default {
   methods: {
     ...mapActions("system", ["clearDB"]),
     ...mapActions("tracks", ["fetchTracks", "saveTrack"]),
-    ...mapActions("issues", ["saveIssue"]),
+    ...mapActions("issues", ["fetchIssues", "saveIssue"]),
     ...mapActions("tasks", ["saveTask"]),
 
     async generate() {
@@ -69,6 +73,7 @@ export default {
         this.saveTrack({
           name: track,
           order: (index + 1) * 10,
+          issues: [],
         });
       });
 
@@ -97,6 +102,18 @@ export default {
           trackId: issueTrack.id,
           progress: calculateProgress(issue.tasks),
           tasks,
+        });
+      }
+
+      await this.fetchIssues();
+
+      for (const track of this.tracks) {
+        const trackIssues = this.issues.filter(
+          (issue) => issue.trackId === track.id
+        );
+        await this.saveTrack({
+          ...track,
+          issues: trackIssues.map((issue) => issue.id),
         });
       }
 
