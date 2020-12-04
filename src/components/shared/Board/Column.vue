@@ -1,12 +1,18 @@
 <template>
-  <section v-if="value" class="board-column">
+  <section
+    v-if="value"
+    :data-column="index"
+    :draggable="canDrag"
+    class="board-column"
+  >
     <header class="board-column__header">
       <label>
         <input
           :value="value.name"
           class="board-column__name"
           placeholder="Enter name"
-          @blur="handleNameBlur"
+          @focus="focus"
+          @blur="save"
         />
       </label>
 
@@ -56,6 +62,16 @@ export default {
       type: Object,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+
+  data() {
+    return {
+      canDrag: true,
+    };
   },
 
   components: {
@@ -78,7 +94,12 @@ export default {
   methods: {
     ...mapActions("issues", ["saveIssue"]),
 
-    handleNameBlur(e) {
+    focus() {
+      this.canDrag = false;
+    },
+
+    save(e) {
+      this.canDrag = true;
       const newText = clearText(e.target.value);
       if (newText === this.value.name) {
         return;

@@ -38,6 +38,22 @@ const actions = {
       });
   },
 
+  async updateOrders({ dispatch }, statuses) {
+    for (const [index, item] of statuses.entries()) {
+      await db.statuses
+        .put({
+          ...item,
+          order: (index + 1) * 10,
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error("updateOrders: " + error);
+        });
+    }
+
+    dispatch("fetchStatuses");
+  },
+
   async deleteStatus({ dispatch }, id) {
     await db.statuses.delete(id);
     dispatch("fetchStatuses");

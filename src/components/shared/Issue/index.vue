@@ -37,7 +37,7 @@
     </h3>
 
     <div class="issue__tasks" @dragover.prevent @drop.stop.prevent="handleDrop">
-      <Gap :index="0" :active="newIndex === 0" :visible="isDragActive" />
+      <TaskGap :index="0" :active="newIndex === 0" :visible="isDragActive" />
       <template v-for="(task, index) in value.tasks">
         <div :key="task" class="issue__task">
           <Task
@@ -48,7 +48,7 @@
           />
         </div>
 
-        <Gap
+        <TaskGap
           :key="index + 'Gap'"
           :index="index + 1"
           :active="newIndex === index + 1"
@@ -74,7 +74,7 @@ import { mapGetters, mapActions } from "vuex";
 import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
 import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
 import Task from "@/components/shared/Issue/Task";
-import Gap from "@/components/shared/Issue/Gap";
+import TaskGap from "@/components/shared/Issue/TaskGap";
 import { clearText } from "@/libs/utils";
 
 export default {
@@ -82,7 +82,7 @@ export default {
 
   components: {
     Task,
-    Gap,
+    TaskGap,
   },
 
   props: {
@@ -310,7 +310,7 @@ export default {
     },
 
     handleDropZone(event, state) {
-      if (event.target.className.includes("space-zone")) {
+      if (event.target.className.includes("task-space-zone")) {
         if (!state) {
           this.newIndex = null;
           return;

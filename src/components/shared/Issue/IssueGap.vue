@@ -1,6 +1,6 @@
 <template>
   <div :class="classes" :data-index="index">
-    <div class="issue-gap__dilator space-zone" :data-index="index" />
+    <div class="issue-gap__dilator issue-space-zone" :data-index="index" />
   </div>
 </template>
 
@@ -35,8 +35,7 @@ $block: ".issue-gap";
 #{$block} {
   position: relative;
   z-index: 10;
-  height: 4px;
-  margin-left: -20px;
+  width: var(--gap);
 
   &_active {
     background: var(--color-primary);
@@ -45,10 +44,10 @@ $block: ".issue-gap";
   &__dilator {
     display: none;
     position: absolute;
-    top: -10px;
-    bottom: -10px;
-    left: 0;
-    width: 100%;
+    top: 0;
+    left: -10px;
+    right: -10px;
+    height: 100%;
 
     #{$block}_visible & {
       display: block;

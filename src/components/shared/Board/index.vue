@@ -1,14 +1,22 @@
 <template>
-  <main class="board">
-    <div class="board__space" />
-    <template v-for="column in statuses">
+  <main class="board" @dragover.prevent @drop.stop.prevent="handleDrop">
+    <ColumnGap :index="0" :active="newIndex === 0" :visible="isDragActive" />
+
+    <template v-for="(column, index) in statuses">
       <BoardColumn
         :key="column.id"
         :value="column"
+        :index="index"
         @edit="save"
         @delete="remove"
       />
-      <div :key="column.id + 'Space'" class="board__space" />
+
+      <ColumnGap
+        :key="index + 'Gap'"
+        :index="index + 1"
+        :active="newIndex === index + 1"
+        :visible="isDragActive"
+      />
     </template>
 
     <div class="board__new">
@@ -41,6 +49,7 @@ import { mapGetters, mapActions } from "vuex";
 import { GET_STATUSES } from "@/store/modules/statuses/types";
 import BoardColumn from "@/components/shared/Board/Column";
 import Issue from "@/components/shared/Issue";
+import ColumnGap from "@/components/shared/Board/ColumnGap";
 
 export default {
   name: "Board",
@@ -48,6 +57,7 @@ export default {
   components: {
     BoardColumn,
     Issue,
+    ColumnGap,
   },
 
   data() {
@@ -55,6 +65,10 @@ export default {
       isModalVisible: false,
       isNoticeVisible: false,
       visibleIssueId: null,
+      isDropZoneActive: false,
+      StatusIndex: null,
+      newIndex: null,
+      isDragActive: false,
     };
   },
 
@@ -91,6 +105,17 @@ export default {
     },
   },
 
+  beforeMount() {
+    this.$nextTick(() => {
+      this.removeListeners();
+      this.addListeners();
+    });
+  },
+
+  beforeDestroy() {
+    this.removeListeners();
+  },
+
   created() {
     this.fetchStatuses();
     this.fetchIssues();
@@ -102,9 +127,110 @@ export default {
   },
 
   methods: {
-    ...mapActions("statuses", ["fetchStatuses", "saveStatus", "deleteStatus"]),
+    ...mapActions("statuses", [
+      "fetchStatuses",
+      "saveStatus",
+      "deleteStatus",
+      "updateOrders",
+    ]),
     ...mapActions("issues", ["fetchIssues"]),
     ...mapActions("tasks", ["fetchTasks"]),
+
+    addListeners() {
+      document.addEventListener(
+        "dragstart",
+        (event) => this.handleDrag(event, true),
+        false
+      );
+
+      document.addEventListener(
+        "dragend",
+        (event) => this.handleDrag(event, false),
+        false
+      );
+
+      document.addEventListener(
+        "dragenter",
+        (event) => this.handleDropZone(event, true),
+        false
+      );
+
+      document.addEventListener(
+        "dragleave",
+        (event) => this.handleDropZone(event, false),
+        false
+      );
+    },
+
+    removeListeners() {
+      document.removeEventListener(
+        "dragstart",
+        (event) => this.handleDrag(event, true),
+        false
+      );
+
+      document.removeEventListener(
+        "dragend",
+        (event) => this.handleDrag(event, false),
+        false
+      );
+
+      document.removeEventListener(
+        "dragenter",
+        (event) => this.handleDropZone(event, true),
+        false
+      );
+
+      document.removeEventListener(
+        "dragleave",
+        (event) => this.handleDropZone(event, false),
+        false
+      );
+    },
+
+    handleDrag(event, state) {
+      this.isDragActive = state;
+      let StatusIndex;
+      if (state) {
+        StatusIndex = Number(event.target.dataset.column);
+      }
+      this.StatusIndex = StatusIndex;
+    },
+
+    handleDropZone(event, state) {
+      if (event.target.className.includes("column-space-zone")) {
+        if (!state) {
+          this.newIndex = null;
+          return;
+        }
+        this.isDropZoneActive = state;
+        this.newIndex = Number(event.target.dataset.index);
+      }
+    },
+
+    async handleDrop() {
+      console.log("handleDrop", this.newIndex, this.StatusIndex);
+      if (this.newIndex !== null) {
+        if (this.StatusIndex || this.StatusIndex === 0) {
+          const statuses = [...this.statuses];
+          const task = statuses[this.StatusIndex];
+          if (this.StatusIndex < this.newIndex) {
+            statuses.splice(this.newIndex, 0, task);
+            statuses.splice(this.StatusIndex, 1);
+          } else {
+            statuses.splice(this.StatusIndex, 1);
+            statuses.splice(this.newIndex, 0, task);
+          }
+          await this.updateOrders(statuses);
+        }
+      }
+
+      this.$nextTick(() => {
+        this.StatusIndex = null;
+        this.newIndex = null;
+        this.isDropZoneActive = false;
+      });
+    },
 
     showNotice() {
       if (!localStorage.closedTaskNotice) {
@@ -155,11 +281,6 @@ $block: ".board";
   max-width: 100%;
   height: 100%;
   padding: var(--gap) 0;
-
-  &__space {
-    flex: 0 0 var(--gap);
-    align-self: stretch;
-  }
 
   &__new {
     flex: 0 0 auto;
