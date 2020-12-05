@@ -26,11 +26,11 @@ const routes = [
   {
     path: "/projects/demo/feed",
     name: "ProjectFeed",
-    component: Board,
+    component: Feed,
   },
   {
     path: "/projects/demo/feed/:id",
-    name: "ProjectFeed",
+    name: "ProjectFeedCard",
     component: Feed,
   },
   {
@@ -40,7 +40,7 @@ const routes = [
   },
   {
     path: "/projects/demo/board/:id",
-    name: "ProjectCard",
+    name: "ProjectBoardCard",
     component: Board,
   },
 ];
