@@ -339,7 +339,7 @@ export default {
     },
 
     closeModal() {
-      this.$router.push("/project");
+      this.$router.push("/projects/demo/board");
     },
   },
 };

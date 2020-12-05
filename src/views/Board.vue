@@ -13,7 +13,7 @@ export default {
   },
 
   metaInfo: {
-    title: "Project",
+    title: "Project Board",
   },
 };
 </script>

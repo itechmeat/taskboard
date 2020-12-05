@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="projects">
     <Generator />
   </div>
 </template>
@@ -8,20 +8,20 @@
 import Generator from "@/components/shared/Generator";
 
 export default {
-  name: "HomeView",
+  name: "ProjectsView",
 
   components: {
     Generator,
   },
 
   metaInfo: {
-    title: "Homepage",
+    title: "Projects list",
   },
 };
 </script>
 
 <style lang="scss">
-$block: ".home";
+$block: ".projects";
 
 #{$block} {
   display: flex;
