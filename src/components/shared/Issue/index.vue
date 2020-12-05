@@ -1,6 +1,9 @@
 <template>
   <article v-if="value" class="issue">
     <header class="issue__header">
+      <div class="issue__progress">
+        <ui-battery :progress="value.progress" />
+      </div>
       <input
         v-model="value.name"
         class="issue__title"
@@ -8,19 +11,44 @@
         @blur="save"
       />
 
-      <ui-menu class="issue__menu">
-        <ui-menu-title>Move to...</ui-menu-title>
-        <ui-menu-item
-          v-for="track in availableTracks"
-          :key="track.id"
-          @click="changeTrack(track.id)"
-        >
-          {{ track.name }}
-        </ui-menu-item>
-        <ui-menu-title>Actions</ui-menu-title>
-        <ui-menu-item @click="remove">Delete</ui-menu-item>
-      </ui-menu>
+      <div v-if="canClose" class="issue__close">
+        <ui-simple-button @click="$emit('close')" />
+      </div>
     </header>
+
+    <div class="issue__actions">
+      <div class="issue__action">
+        <div class="issue__track">
+          <ui-menu type="success" label="Paid in part">
+            <ui-menu-title>Payment status</ui-menu-title>
+            <ui-menu-item>Not paid</ui-menu-item>
+            <ui-menu-item>Billed</ui-menu-item>
+            <ui-menu-item>Paid up</ui-menu-item>
+          </ui-menu>
+        </div>
+      </div>
+
+      <div class="issue__action">
+        <div class="issue__track">
+          <ui-menu type="primary" :label="currentTrack.name">
+            <ui-menu-title>Move to track</ui-menu-title>
+            <ui-menu-item
+              v-for="track in availableTracks"
+              :key="track.id"
+              @click="changeTrack(track.id)"
+            >
+              {{ track.name }}
+            </ui-menu-item>
+          </ui-menu>
+        </div>
+      </div>
+
+      <div class="issue__action">
+        <ui-button type="danger" @click="remove">Remove</ui-button>
+      </div>
+
+      <div class="space" />
+    </div>
 
     <h3 class="issue__legend">Description</h3>
     <div
@@ -31,10 +59,7 @@
       v-html="value.description"
     />
 
-    <h3 class="issue__legend">
-      Tasks
-      <ui-battery :progress="value.progress" />
-    </h3>
+    <h3 class="issue__legend">Tasks</h3>
 
     <div class="issue__tasks" @dragover.prevent @drop.stop.prevent="handleDrop">
       <TaskGap :index="0" :active="newIndex === 0" :visible="isDragActive" />
@@ -94,6 +119,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    canClose: Boolean,
   },
 
   data() {
@@ -121,6 +147,14 @@ export default {
         return;
       }
       return "Enter the description for the Issue";
+    },
+
+    currentTrack() {
+      if (!this.value || !this.tracks) {
+        return;
+      }
+
+      return this.tracks.find((track) => track.id === this.value.trackId);
     },
 
     availableTracks() {
@@ -382,6 +416,12 @@ $block: ".issue";
     margin: 0 0 var(--gap);
   }
 
+  &__progress {
+    display: flex;
+    align-items: center;
+    margin-right: var(--gap);
+  }
+
   &__title {
     flex: 1;
     margin: -4px calc(var(--gap-0-5) * -1);
@@ -398,8 +438,10 @@ $block: ".issue";
     }
   }
 
-  &__menu {
-    margin: 0 -12px 0 var(--gap);
+  &__close {
+    display: flex;
+    align-items: center;
+    margin-left: var(--gap);
   }
 
   &__legend {
@@ -409,6 +451,29 @@ $block: ".issue";
     margin: var(--gap-1-5) 0 var(--gap-0-5);
     font-size: var(--font-size-big);
     font-weight: 500;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--gap) 0;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    margin-left: var(--gap);
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &__label {
+    margin-right: var(--gap-0-5);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-small);
   }
 
   &__description {

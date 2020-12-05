@@ -204,10 +204,6 @@ $block: ".task";
     transition: transform 0.2s;
     will-change: transform;
 
-    &:hover {
-      background: rgba(#000, 0.1);
-    }
-
     &::before,
     &::after {
       content: "";
@@ -219,6 +215,15 @@ $block: ".task";
       border-radius: 2px;
       background: var(--color-border);
       transform: rotate(45deg);
+    }
+
+    &:hover {
+      background: rgba(#000, 0.1);
+
+      &::before,
+      &::after {
+        background: var(--color-text);
+      }
     }
 
     &::after {

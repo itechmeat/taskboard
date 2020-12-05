@@ -1,12 +1,15 @@
 <template>
-  <div :class="['ui-menu', { 'ui-menu_open': isOpen }]">
+  <div :class="['ui-menu', 'ui-menu_' + type, { 'ui-menu_open': isOpen }]">
     <ui-button
       v-click-outside="closeMenu"
-      type="clear"
+      :type="type"
       class="ui-menu__control"
       aria-label="Menu"
       @click="handleClick"
     >
+      <span class="ui-menu__label">
+        {{ label }}
+      </span>
       <span class="ui-menu__icon" />
     </ui-button>
 
@@ -21,6 +24,14 @@ export default {
   name: "UiMenu",
 
   props: {
+    type: {
+      type: String,
+      default: "clear",
+    },
+    label: {
+      type: String,
+      default: undefined,
+    },
     position: {
       // Todo: premature implementation
       type: String,
@@ -53,17 +64,23 @@ export default {
 $block: ".ui-menu";
 
 #{$block} {
+  display: inline-block;
   position: relative;
+  user-select: none;
 
   &__control {
     position: relative;
     vertical-align: bottom;
   }
 
+  &__label {
+    padding-right: var(--gap);
+  }
+
   &__icon {
     position: absolute;
     top: calc(50% - 1px);
-    left: calc(50% - 1px);
+    right: calc(50% - 1px);
     width: 2px;
     height: 2px;
     border-radius: 50%;
@@ -88,6 +105,11 @@ $block: ".ui-menu";
       top: 5px;
     }
 
+    #{$block}_primary &,
+    #{$block}_success & {
+      background: var(--color-light);
+    }
+
     #{$block}_open & {
       transform: translateY(2px) rotate(90deg);
 
@@ -99,6 +121,11 @@ $block: ".ui-menu";
         transform: translate(-3px, -9px);
       }
     }
+  }
+
+  &__label + &__icon {
+    left: auto;
+    right: var(--gap);
   }
 
   &__dropdown {

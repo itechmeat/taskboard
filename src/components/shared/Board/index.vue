@@ -129,26 +129,17 @@ export default {
     this.removeListeners();
   },
 
-  created() {
-    this.fetchTracks();
-    this.fetchIssues();
-    this.fetchTasks();
-  },
-
   mounted() {
     this.showNotice();
   },
 
   methods: {
     ...mapActions("tracks", [
-      "fetchTracks",
       "saveTrack",
       "deleteTrack",
       "updateOrders",
       "moveIssue",
     ]),
-    ...mapActions("issues", ["fetchIssues"]),
-    ...mapActions("tasks", ["fetchTasks"]),
 
     addListeners() {
       document.addEventListener(

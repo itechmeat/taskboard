@@ -1,6 +1,7 @@
 import Vue from "vue";
 
 import Button from "./components/ui/controls/Button.vue";
+import SimpleButton from "./components/ui/controls/SimpleButton.vue";
 import Switcher from "./components/ui/controls/Switcher.vue";
 import Menu from "./components/ui/controls/Menu/index.vue";
 import MenuItem from "./components/ui/controls/Menu/Item.vue";
@@ -13,6 +14,7 @@ import Battery from "./components/ui/elements/Battery.vue";
 import Notice from "./components/ui/elements/Notice.vue";
 
 Vue.component("ui-button", Button);
+Vue.component("ui-simple-button", SimpleButton);
 Vue.component("ui-switcher", Switcher);
 Vue.component("ui-menu", Menu);
 Vue.component("ui-menu-item", MenuItem);

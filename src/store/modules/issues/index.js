@@ -73,6 +73,9 @@ const mutations = {
   },
 
   [TYPES.SET_ISSUES]: (state, payload) => {
+    payload.sort((a, b) => {
+      return a.order - b.order;
+    });
     state.issues = payload;
   },
 };

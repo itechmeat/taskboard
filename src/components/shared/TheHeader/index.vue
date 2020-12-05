@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <router-link to="/" class="header__brand">TaskBoard</router-link>
+    <router-link to="/" class="header__brand">Estim8.work</router-link>
 
     <div class="space" />
 
@@ -30,7 +30,9 @@ export default {
     isModeVisible() {
       return (
         this.$route.name === "ProjectFeed" ||
-        this.$route.name === "ProjectBoard"
+        this.$route.name === "ProjectFeedCard" ||
+        this.$route.name === "ProjectBoard" ||
+        this.$route.name === "ProjectBoardCard"
       );
     },
   },

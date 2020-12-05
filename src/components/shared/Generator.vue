@@ -97,6 +97,8 @@ export default {
 
       await this.fetchTracks();
 
+      let order = 10;
+
       for (const issue of ISSUES) {
         const issueTrack = this.tracks.find(
           (track) => track.name === issue.track
@@ -119,8 +121,11 @@ export default {
           description: issue.description,
           trackId: issueTrack.id,
           progress: calculateProgress(issue.tasks),
+          order: order,
           tasks,
         });
+
+        order += 10;
       }
 
       await this.fetchIssues();

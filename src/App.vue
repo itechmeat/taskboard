@@ -7,11 +7,24 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import TheHeader from "@/components/shared/TheHeader";
 
 export default {
   components: {
     TheHeader,
+  },
+
+  created() {
+    this.fetchTracks();
+    this.fetchIssues();
+    this.fetchTasks();
+  },
+
+  methods: {
+    ...mapActions("tracks", ["fetchTracks"]),
+    ...mapActions("issues", ["fetchIssues"]),
+    ...mapActions("tasks", ["fetchTasks"]),
   },
 
   metaInfo: {

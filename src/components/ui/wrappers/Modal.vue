@@ -5,11 +5,9 @@
         <slot />
       </div>
 
-      <button
-        class="ui-modal__close"
-        aria-label="Close"
-        @click.prevent="close"
-      />
+      <div class="ui-modal__close">
+        <ui-simple-button @click="close" />
+      </div>
     </div>
   </div>
 </template>
@@ -112,41 +110,10 @@ $block: ".ui-modal";
   }
 
   &__close {
-    @extend %resetButton;
     position: absolute;
     z-index: 10;
     top: var(--gap-0-5);
     right: var(--gap-0-5);
-    width: var(--gap-1-5);
-    height: var(--gap-1-5);
-    border-radius: 50%;
-    background: var(--color-bg-accent);
-    outline: none;
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      top: calc(50% - 1px);
-      left: 25%;
-      width: 50%;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--color-text-hint);
-      pointer-events: none;
-      transform: rotate(45deg);
-    }
-
-    &::after {
-      transform: rotate(-45deg);
-    }
-
-    &:hover {
-      &::before,
-      &::after {
-        background: var(--color-primary);
-      }
-    }
 
     @include display(desktop) {
       top: calc(var(--gap-2) * -1);
