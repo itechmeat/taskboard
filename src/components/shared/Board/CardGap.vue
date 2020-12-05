@@ -1,16 +1,24 @@
 <template>
   <div :class="classes">
-    <div class="task-gap__dilator task-space-zone" :data-index="index" />
+    <div
+      class="card-gap__dilator card-space-zone"
+      :data-index="index"
+      :data-track="track"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  name: "IssueGap",
+  name: "CardGap",
 
   props: {
     index: {
       type: Number,
+      required: true,
+    },
+    track: {
+      type: String,
       required: true,
     },
     active: Boolean,
@@ -20,9 +28,9 @@ export default {
   computed: {
     classes() {
       return [
-        "task-gap",
-        { "task-gap_active": this.active },
-        { "task-gap_visible": this.visible },
+        "card-gap",
+        { "card-gap_active": this.active },
+        { "card-gap_visible": this.visible },
       ];
     },
   },
@@ -30,13 +38,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$block: ".task-gap";
+$block: ".card-gap";
 
 #{$block} {
   position: relative;
   z-index: 10;
-  height: 4px;
-  margin-left: -20px;
+  height: var(--gap-0-5);
 
   &_active {
     background: var(--color-primary);

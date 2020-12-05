@@ -60,11 +60,13 @@ const actions = {
   },
 
   async moveIssue({ getters, dispatch }, moving) {
+    // moving: {issueId, oldTrackId, newTrackId, newIndex}
     const oldTrack = getters[TYPES.GET_TRACK_BY_ID](moving.oldTrackId);
     const oldTrackIssues = [...oldTrack.issues];
     const oldTrackIssueIndex = oldTrack.issues.findIndex(
       (item) => item === moving.issueId
     );
+    let newIndex = moving.newIndex || 0;
 
     if (oldTrackIssueIndex !== -1) {
       oldTrackIssues.splice(oldTrackIssueIndex, 1);
@@ -74,9 +76,16 @@ const actions = {
       });
     }
 
-    const newTrack = getters[TYPES.GET_TRACK_BY_ID](moving.newTrackId);
-    const newTrackIssues = [...newTrack.issues];
-    newTrackIssues.unshift(moving.issueId);
+    let newTrack;
+    let newTrackIssues;
+    if (moving.oldTrackId === moving.newTrackId) {
+      newTrackIssues = oldTrackIssues;
+      newTrack = oldTrack;
+    } else {
+      newTrack = getters[TYPES.GET_TRACK_BY_ID](moving.newTrackId);
+      newTrackIssues = [...newTrack.issues];
+    }
+    newTrackIssues.splice(newIndex, 0, moving.issueId);
     dispatch("saveTrack", {
       ...newTrack,
       issues: newTrackIssues,

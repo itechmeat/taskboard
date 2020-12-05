@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes" :data-index="index">
+  <div :class="classes">
     <div class="column-gap__dilator column-space-zone" :data-index="index" />
   </div>
 </template>

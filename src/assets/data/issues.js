@@ -125,7 +125,7 @@ export default [
   {
     name: "Add Drag&Drop for entities",
     description: "",
-    track: "To Do",
+    track: "In Progress",
     progress: 0,
     tasks: [
       {
@@ -135,13 +135,18 @@ export default [
       },
       {
         name: "Add Drag&Drop for Issues",
-        progress: 10,
-        isDone: false,
+        progress: 100,
+        isDone: true,
       },
       {
         name: "Add Drag&Drop for Tracks",
         progress: 100,
         isDone: true,
+      },
+      {
+        name: "Make refactoring of Drag&Drop",
+        progress: 0,
+        isDone: false,
       },
     ],
   },
@@ -166,7 +171,7 @@ export default [
   {
     name: "Add more Data to an Issue",
     description: "",
-    track: "In Progress",
+    track: "To Do",
     progress: 0,
     tasks: [
       {

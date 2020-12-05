@@ -30,10 +30,28 @@
     </header>
 
     <div class="board-column__list">
-      <div class="board-column__space" />
-      <template v-for="issue in value.issues">
-        <BoardCard :key="issue" :id="issue" />
-        <div :key="issue + 'Space'" class="board-column__space" />
+      <CardGap
+        :index="0"
+        :active="overCardIndex === 0 && overTrackId === value.id"
+        :visible="gapActive"
+        :track="value.id"
+      />
+
+      <template v-for="(issue, index) in value.issues">
+        <BoardCard
+          :key="issue"
+          :id="issue"
+          :index="index"
+          :data-track="value.id"
+        />
+
+        <CardGap
+          :key="index + 'Gap'"
+          :index="index + 1"
+          :active="overCardIndex === index + 1 && overTrackId === value.id"
+          :visible="gapActive"
+          :track="value.id"
+        />
       </template>
     </div>
 
@@ -54,6 +72,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { GET_ISSUE_BY_ID } from "@/store/modules/issues/types";
 import BoardCard from "@/components/shared/Board/Card";
+import CardGap from "@/components/shared/Board/CardGap";
 import { clearText } from "@/libs/utils";
 
 export default {
@@ -68,6 +87,15 @@ export default {
       type: Number,
       required: true,
     },
+    overCardIndex: {
+      type: Number,
+      default: null,
+    },
+    overTrackId: {
+      type: String,
+      default: null,
+    },
+    gapActive: Boolean,
   },
 
   data() {
@@ -78,6 +106,7 @@ export default {
 
   components: {
     BoardCard,
+    CardGap,
   },
 
   computed: {

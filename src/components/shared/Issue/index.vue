@@ -11,11 +11,11 @@
       <ui-menu class="issue__menu">
         <ui-menu-title>Move to...</ui-menu-title>
         <ui-menu-item
-          v-for="column in columns"
-          :key="column.id"
-          @click="changeTrack(column.id)"
+          v-for="track in availableTracks"
+          :key="track.id"
+          @click="changeTrack(track.id)"
         >
-          {{ column.name }}
+          {{ track.name }}
         </ui-menu-item>
         <ui-menu-title>Actions</ui-menu-title>
         <ui-menu-item @click="remove">Delete</ui-menu-item>
@@ -90,7 +90,7 @@ export default {
       type: String,
       required: true,
     },
-    columns: {
+    tracks: {
       type: Array,
       default: () => [],
     },
@@ -99,7 +99,6 @@ export default {
   data() {
     return {
       value: null,
-      isDropZoneActive: false,
       taskIndex: null,
       newIndex: null,
       isDragActive: false,
@@ -122,6 +121,21 @@ export default {
         return;
       }
       return "Enter the description for the Issue";
+    },
+
+    availableTracks() {
+      if (!this.value || !this.tracks) {
+        return;
+      }
+
+      return this.tracks
+        .map((track) => {
+          if (track.id === this.value.trackId) {
+            return;
+          }
+          return track;
+        })
+        .filter(Boolean);
     },
   },
 
@@ -325,7 +339,6 @@ export default {
           this.newIndex = null;
           return;
         }
-        this.isDropZoneActive = state;
         this.newIndex = Number(event.target.dataset.index);
       }
     },
@@ -348,7 +361,6 @@ export default {
       this.$nextTick(() => {
         this.taskIndex = null;
         this.newIndex = null;
-        this.isDropZoneActive = false;
       });
     },
   },

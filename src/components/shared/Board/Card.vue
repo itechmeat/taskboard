@@ -1,5 +1,11 @@
 <template>
-  <router-link v-if="value" class="board-card" :to="'/project/' + value.id">
+  <router-link
+    v-if="value"
+    class="board-card"
+    :to="'/project/' + value.id"
+    :draggable="canDrag"
+    :data-issue="index"
+  >
     <div class="board-card__label">{{ value.name }}</div>
     <ui-battery :progress="value.progress" />
   </router-link>
@@ -18,11 +24,16 @@ export default {
       type: String,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    },
   },
 
   data() {
     return {
       value: null,
+      canDrag: true,
     };
   },
 

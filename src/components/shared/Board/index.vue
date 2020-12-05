@@ -1,12 +1,19 @@
 <template>
   <main class="board" @dragover.prevent @drop.stop.prevent="handleDrop">
-    <ColumnGap :index="0" :active="newIndex === 0" :visible="isDragActive" />
+    <ColumnGap
+      :index="0"
+      :active="newTrackIndex === 0"
+      :visible="isColumnDragActive"
+    />
 
     <template v-for="(column, index) in tracks">
       <BoardColumn
         :key="column.id"
         :value="column"
         :index="index"
+        :gap-active="isCardDragActive"
+        :over-card-index="newCardIndex"
+        :over-track-id="targetTrack"
         @edit="save"
         @delete="remove"
       />
@@ -14,8 +21,8 @@
       <ColumnGap
         :key="index + 'Gap'"
         :index="index + 1"
-        :active="newIndex === index + 1"
-        :visible="isDragActive"
+        :active="newTrackIndex === index + 1"
+        :visible="isColumnDragActive"
       />
     </template>
 
@@ -27,7 +34,7 @@
       <Issue
         v-if="visibleIssueId"
         :id="visibleIssueId"
-        :columns="tracks"
+        :tracks="tracks"
         @close="closeModal"
       />
     </ui-modal>
@@ -65,10 +72,16 @@ export default {
       isModalVisible: false,
       isNoticeVisible: false,
       visibleIssueId: null,
-      isDropZoneActive: false,
-      TrackIndex: null,
-      newIndex: null,
-      isDragActive: false,
+      trackIndex: null,
+      newTrackIndex: null,
+      cardIndex: null,
+      newCardIndex: null,
+      isColumnDragActive: false,
+      isCardDragActive: false,
+      cardId: null,
+      oldTrack: null,
+      targetTrack: null,
+      dragType: undefined,
     };
   },
 
@@ -132,6 +145,7 @@ export default {
       "saveTrack",
       "deleteTrack",
       "updateOrders",
+      "moveIssue",
     ]),
     ...mapActions("issues", ["fetchIssues"]),
     ...mapActions("tasks", ["fetchTasks"]),
@@ -160,6 +174,8 @@ export default {
         (event) => this.handleDropZone(event, false),
         false
       );
+
+      document.addEventListener("dragend", () => this.handleDropEnd(), false);
     },
 
     removeListeners() {
@@ -186,49 +202,110 @@ export default {
         (event) => this.handleDropZone(event, false),
         false
       );
+
+      document.removeEventListener(
+        "dragend",
+        () => this.handleDropEnd(),
+        false
+      );
     },
 
     handleDrag(event, state) {
-      this.isDragActive = state;
-      let TrackIndex;
-      if (state) {
-        TrackIndex = Number(event.target.dataset.column);
+      let dragType;
+      if (event.target.dataset.column) {
+        dragType = "column";
       }
-      this.TrackIndex = TrackIndex;
+      if (event.target.dataset.issue) {
+        dragType = "card";
+      }
+      this.dragType = dragType;
+
+      if (dragType === "column") {
+        this.isColumnDragActive = state;
+        let trackIndex;
+        if (state) {
+          trackIndex = Number(event.target.dataset.column);
+        }
+        this.trackIndex = trackIndex;
+        return;
+      }
+
+      if (dragType === "card") {
+        this.oldTrack = event.target.dataset.track;
+        const oldTrack = this.tracks.find(
+          (track) => track.id === this.oldTrack
+        );
+        this.cardId = oldTrack.issues[event.target.dataset.issue];
+        this.isCardDragActive = state;
+        let cardIndex;
+        if (state) {
+          cardIndex = Number(event.target.dataset.issue);
+        }
+        this.cardIndex = cardIndex;
+      }
     },
 
     handleDropZone(event, state) {
       if (event.target.className.includes("column-space-zone")) {
         if (!state) {
-          this.newIndex = null;
+          this.newTrackIndex = null;
           return;
         }
-        this.isDropZoneActive = state;
-        this.newIndex = Number(event.target.dataset.index);
+        this.newTrackIndex = Number(event.target.dataset.index);
+      }
+
+      if (event.target.className.includes("card-space-zone")) {
+        if (!state) {
+          this.newCardIndex = null;
+          this.targetTrack = null;
+          return;
+        }
+        this.newCardIndex = Number(event.target.dataset.index);
+        this.targetTrack = event.target.dataset.track;
       }
     },
 
     async handleDrop() {
-      if (this.newIndex !== null) {
-        if (this.TrackIndex || this.TrackIndex === 0) {
-          const tracks = [...this.tracks];
-          const task = tracks[this.TrackIndex];
-          if (this.TrackIndex < this.newIndex) {
-            tracks.splice(this.newIndex, 0, task);
-            tracks.splice(this.TrackIndex, 1);
-          } else {
-            tracks.splice(this.TrackIndex, 1);
-            tracks.splice(this.newIndex, 0, task);
+      if (this.dragType === "column") {
+        if (this.newTrackIndex !== null) {
+          if (this.trackIndex || this.trackIndex === 0) {
+            const tracks = [...this.tracks];
+            const task = tracks[this.trackIndex];
+            if (this.trackIndex < this.newTrackIndex) {
+              tracks.splice(this.newTrackIndex, 0, task);
+              tracks.splice(this.trackIndex, 1);
+            } else {
+              tracks.splice(this.trackIndex, 1);
+              tracks.splice(this.newTrackIndex, 0, task);
+            }
+            await this.updateOrders(tracks);
           }
-          await this.updateOrders(tracks);
         }
       }
 
+      if (this.dragType === "card") {
+        await this.moveIssue({
+          issueId: this.cardId,
+          oldTrackId: this.oldTrack,
+          newTrackId: this.targetTrack,
+          newIndex: this.newCardIndex,
+        });
+      }
+
       this.$nextTick(() => {
-        this.TrackIndex = null;
-        this.newIndex = null;
-        this.isDropZoneActive = false;
+        this.handleDropEnd();
       });
+    },
+
+    handleDropEnd() {
+      this.trackIndex = null;
+      this.newTrackIndex = null;
+      this.cardIndex = null;
+      this.newCardIndex = null;
+      this.cardId = null;
+      this.oldTrack = null;
+      this.targetTrack = null;
+      this.dragType = undefined;
     },
 
     showNotice() {
