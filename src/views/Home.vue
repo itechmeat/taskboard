@@ -33,7 +33,7 @@ export default {
   },
 
   metaInfo: {
-    title: "Homepage",
+    title: "Calculate the cost of project development easily",
   },
 };
 </script>
