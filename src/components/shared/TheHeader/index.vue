@@ -118,6 +118,10 @@ $block: ".header";
 
     span {
       margin-right: var(--gap-0-5);
+
+      @include display-less(desktop) {
+        display: none;
+      }
     }
   }
 }

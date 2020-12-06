@@ -40,6 +40,10 @@ $block: ".partners";
 #{$block} {
   padding: var(--gap-2) 0;
 
+  @include display-less(smart) {
+    padding: var(--gap) 0;
+  }
+
   &__list {
     @extend %resetList;
     display: flex;
@@ -48,8 +52,20 @@ $block: ".partners";
     justify-content: space-evenly;
   }
 
+  &__item {
+    @include display-less(smart) {
+      flex: 0 0 50%;
+      margin: var(--gap) 0;
+      text-align: center;
+    }
+  }
+
   &__logo {
     height: 40px;
+
+    @include display-less(desktop) {
+      height: 20px;
+    }
   }
 }
 </style>

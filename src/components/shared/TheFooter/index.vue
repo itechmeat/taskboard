@@ -30,6 +30,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/styles/system";
+
 $block: ".footer";
 
 #{$block} {
@@ -40,8 +42,19 @@ $block: ".footer";
 
   &__content {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+
+    @include display-less(tablet) {
+      .footer-nav {
+        order: 3;
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: var(--gap);
+      }
+    }
   }
 
   &__brand {

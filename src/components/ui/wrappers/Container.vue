@@ -21,6 +21,7 @@ export default {
 $block: ".ui-container";
 
 #{$block} {
+  width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 var(--gap);

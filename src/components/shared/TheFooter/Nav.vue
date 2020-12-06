@@ -2,13 +2,17 @@
   <nav class="footer-nav">
     <ul class="footer-nav__list">
       <li class="footer-nav__item">
-        <router-link to="/" class="footer-nav__link">About Us</router-link>
+        <router-link to="/about" class="footer-nav__link">About Us</router-link>
       </li>
       <li class="footer-nav__item">
-        <router-link to="/" class="footer-nav__link">Pricing</router-link>
+        <router-link to="/pricing" class="footer-nav__link">
+          Pricing
+        </router-link>
       </li>
       <li class="footer-nav__item">
-        <router-link to="/" class="footer-nav__link">Careers</router-link>
+        <router-link to="/careers" class="footer-nav__link">
+          Careers
+        </router-link>
       </li>
     </ul>
   </nav>

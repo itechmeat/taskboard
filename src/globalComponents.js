@@ -12,6 +12,8 @@ import MenuTitle from "./components/ui/controls/Menu/Title.vue";
 import Time from "./components/ui/controls/Time.vue";
 
 import Container from "./components/ui/wrappers/Container.vue";
+import Article from "./components/ui/wrappers/Article.vue";
+import Content from "./components/ui/wrappers/Content.vue";
 import Modal from "./components/ui/wrappers/Modal.vue";
 
 import Spinner from "./components/ui/elements/Spinner.vue";
@@ -30,6 +32,8 @@ Vue.component("ui-menu-title", MenuTitle);
 Vue.component("ui-time", Time);
 
 Vue.component("ui-container", Container);
+Vue.component("ui-article", Article);
+Vue.component("ui-content", Content);
 Vue.component("ui-modal", Modal);
 
 Vue.component("ui-spinner", Spinner);

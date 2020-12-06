@@ -105,6 +105,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/styles/system";
+
 $block: ".feed";
 
 #{$block} {
@@ -116,23 +118,38 @@ $block: ".feed";
   max-height: 100%;
   padding: var(--gap);
 
+  @include display-less(desktop) {
+    flex-direction: column-reverse;
+  }
+
   &__list {
     flex: 0 0 400px;
     max-width: 800px;
     border: 1px solid var(--color-border);
     border-radius: var(--border-raius);
+
+    @include display-less(desktop) {
+      flex: 0 0 auto;
+      width: 100%;
+    }
   }
 
   &__aside {
     flex: 0 0 560px;
     position: sticky;
     top: 0;
-    min-height: 300px;
     margin: 0 0 0 var(--gap);
     padding: var(--gap) var(--gap-1-5);
     border: 1px solid var(--color-border);
     border-radius: var(--border-raius);
     background: var(--color-light);
+
+    @include display-less(desktop) {
+      flex: 0 0 auto;
+      position: static;
+      width: 100%;
+      margin: 0 0 var(--gap);
+    }
   }
 
   &__issue {

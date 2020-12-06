@@ -4,6 +4,9 @@ import Home from "../views/Home.vue";
 import Projects from "../views/Projects.vue";
 import Feed from "../views/Feed.vue";
 import Board from "../views/Board.vue";
+import About from "../views/About.vue";
+import Pricing from "../views/Pricing.vue";
+import Careers from "../views/Careers.vue";
 
 Vue.use(VueRouter);
 
@@ -42,6 +45,21 @@ const routes = [
     path: "/projects/demo/board/:id",
     name: "ProjectBoardCard",
     component: Board,
+  },
+  {
+    path: "/about",
+    name: "AboutUs",
+    component: About,
+  },
+  {
+    path: "/pricing",
+    name: "Pricing",
+    component: Pricing,
+  },
+  {
+    path: "/careers",
+    name: "Careers",
+    component: Careers,
   },
 ];
 
