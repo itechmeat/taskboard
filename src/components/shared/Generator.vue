@@ -109,7 +109,7 @@ export default {
           for (const task of issue.tasks) {
             const taskId = await this.saveTask({
               name: task.name,
-              progress: task.progress,
+              estimate: task.estimate,
               isDone: task.isDone,
             });
             tasks.push(taskId);
@@ -120,6 +120,7 @@ export default {
           name: issue.name,
           description: issue.description,
           trackId: issueTrack.id,
+          estimate: issue.tasks.reduce((a, b) => a + b.estimate, 0),
           progress: calculateProgress(issue.tasks),
           order: order,
           tasks,
@@ -152,25 +153,21 @@ export default {
 };
 
 function calculateProgress(tasks) {
-  const progressList = [];
+  let completedTasks = 0;
 
   tasks.forEach((task) => {
     if (task) {
       if (task.isDone) {
-        progressList.push(100);
-        return;
+        completedTasks++;
       }
-      progressList.push(Number(task.progress) || 0);
     }
   });
 
-  const sum = progressList.reduce((a, b) => a + b, 0);
-
-  return Math.ceil((sum / progressList.length) * 100) / 100;
+  return Math.ceil(completedTasks * 100) / tasks.length;
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $block: ".generator";
 
 #{$block} {

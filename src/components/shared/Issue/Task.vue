@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="value"
-    :data-task="index"
-    :class="{ task_open: isOpen }"
-    :draggable="canDrag"
-    class="task"
-  >
+  <div v-if="value" :data-task="index" :draggable="canDrag" class="task">
     <div class="task__main">
       <div class="task__handler"></div>
       <div class="task__check">
@@ -18,34 +12,25 @@
         @focus="focus"
         @blur="save"
       />
-      <div
-        class="task__progress"
-        :class="{ task__progress_hidden: value.isDone }"
-      >
-        {{ value.progress }}%
-      </div>
-      <div class="task__actions">
-        <button class="task__control" @click="isOpen = !isOpen" />
-      </div>
-    </div>
 
-    <div class="task__data">
-      <div class="task__info">
-        <ui-button type="clear" size="tiny" @click="remove">
-          Remove this task
-        </ui-button>
-      </div>
-      <div class="task__progressor">
-        <input
-          v-model="value.progress"
-          :disabled="value.isDone"
-          class="task__range"
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          @change="save"
+      <div class="task__estimate">
+        <ui-time
+          :value="value.estimate || 0"
+          can-change
+          @change="changeEstimate"
         />
+      </div>
+
+      <div class="task__actions">
+        <ui-menu>
+          <ui-menu-item v-if="!value.isDone" @click="complete">
+            Mark as complete
+          </ui-menu-item>
+          <ui-menu-item v-if="value.isDone" @click="incomplete">
+            Mark as incomplete
+          </ui-menu-item>
+          <ui-menu-item @click="remove">Delete</ui-menu-item>
+        </ui-menu>
       </div>
     </div>
   </div>
@@ -72,7 +57,6 @@ export default {
   data() {
     return {
       value: null,
-      isOpen: false,
       canDrag: true,
     };
   },
@@ -86,19 +70,12 @@ export default {
   watch: {
     id: {
       immediate: true,
-      async handler(val) {
+      handler(val) {
         if (!val) {
           return;
         }
 
-        let issue = this.task(val);
-
-        if (!issue) {
-          await this.fetchTasks();
-          issue = this.task(val);
-        }
-
-        this.value = issue;
+        this.fillTask(val);
       },
     },
   },
@@ -106,14 +83,45 @@ export default {
   methods: {
     ...mapActions("tasks", ["fetchTasks", "saveTask", "deleteTask"]),
 
+    async fillTask(val) {
+      const id = val || this.id;
+      let task = this.task(id);
+
+      if (!task) {
+        await this.fetchTasks();
+        task = this.task(id);
+      }
+
+      this.value = task;
+    },
+
     focus() {
       this.canDrag = false;
     },
 
     async save() {
       await this.saveTask(this.value);
-      this.$emit("update");
       this.canDrag = true;
+      this.$nextTick(() => {
+        this.$emit("update");
+      });
+    },
+
+    complete() {
+      this.value.isDone = true;
+      this.save();
+    },
+
+    incomplete() {
+      this.value.isDone = false;
+      this.save();
+    },
+
+    async changeEstimate(val) {
+      // TODO: Add validation
+      this.value.estimate = val;
+      await this.save();
+      await this.fillTask();
     },
 
     async remove() {
@@ -125,23 +133,16 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/styles/system";
-
 $block: ".task";
 
 #{$block} {
-  margin: 0 -4px 0 -20px;
+  margin: 0 -20px 0 -20px;
   padding: 4px;
   border-radius: var(--border-raius);
 
   &:hover,
   &:focus-within {
     background: var(--color-bg);
-  }
-
-  &_open,
-  &_open:focus-within {
-    background: var(--color-bg-accent);
   }
 
   &__main {
@@ -186,75 +187,12 @@ $block: ".task";
     }
   }
 
-  &__progress {
-    &_hidden {
-      visibility: hidden;
-    }
-  }
-
-  &__control {
-    @extend %resetButton;
-    position: relative;
-    width: var(--gap-1-5);
-    height: var(--gap-1-5);
-    border-radius: 50%;
-    vertical-align: bottom;
-    outline: none;
-    transform: rotate(-90deg);
-    transition: transform 0.2s;
-    will-change: transform;
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 5px;
-      width: 8px;
-      height: 2px;
-      border-radius: 2px;
-      background: var(--color-border);
-      transform: rotate(45deg);
-    }
-
-    &:hover {
-      background: rgba(#000, 0.1);
-
-      &::before,
-      &::after {
-        background: var(--color-text);
-      }
-    }
-
-    &::after {
-      transform: translateX(5px) rotate(-45deg);
-    }
-
-    #{$block}_open & {
-      transform: rotate(0);
-    }
-  }
-
-  &__data {
-    display: none;
-    margin: 4px 4px 2px 30px;
-
-    #{$block}_open & {
-      display: flex;
-    }
-  }
-
-  &__info {
-    flex: 1;
-  }
-
-  &__progressor {
+  &__estimate {
     flex: 0 0 auto;
-    margin-left: var(--gap);
   }
 
-  &__range {
-    width: 100px;
+  &__actions {
+    margin-left: -4px;
   }
 }
 </style>

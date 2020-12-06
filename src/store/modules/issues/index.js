@@ -39,7 +39,7 @@ const actions = {
 
     await db.issues
       .put(newIssue)
-      .then((res) => {
+      .then(async (res) => {
         issueId = res;
         dispatch("fetchIssues");
       })
@@ -59,6 +59,8 @@ const actions = {
         { root: true }
       );
     }
+
+    return issueId;
   },
 
   async deleteIssue({ dispatch }, id) {

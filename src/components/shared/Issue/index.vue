@@ -17,6 +17,10 @@
     </header>
 
     <div class="issue__actions">
+      <ui-time :value="value.estimate || 0" />
+
+      <div class="space" />
+
       <div class="issue__action">
         <div class="issue__track">
           <ui-menu type="success" label="Paid in part">
@@ -46,8 +50,6 @@
       <div class="issue__action">
         <ui-button type="danger" @click="remove">Remove</ui-button>
       </div>
-
-      <div class="space" />
     </div>
 
     <h3 class="issue__legend">Description</h3>
@@ -274,34 +276,46 @@ export default {
     },
 
     async updateTask() {
+      await this.calculateEstimation();
       await this.calculateProgress();
       await this.saveIssue(this.value);
+    },
+
+    async calculateEstimation() {
+      let result = 0;
+
+      this.value.tasks.forEach((id) => {
+        const taskData = this.task(id);
+        if (taskData) {
+          result += taskData.estimate || 0;
+        }
+      });
+
+      this.value.estimate = result;
     },
 
     async calculateProgress() {
       await this.fetchTasks();
 
-      const progressList = [];
+      let completedTasks = 0;
 
       this.value.tasks.forEach((id) => {
         const taskData = this.task(id);
         if (taskData) {
           if (taskData.isDone) {
-            progressList.push(100);
-            return;
+            completedTasks++;
           }
-          progressList.push(Number(taskData.progress) || 0);
         }
       });
 
-      const sum = progressList.reduce((a, b) => a + b, 0);
-
-      this.value.progress = Math.ceil((sum / progressList.length) * 100) / 100;
+      this.value.progress =
+        Math.ceil(completedTasks * 100) / this.value.tasks.length;
     },
 
     async removeTask(id) {
       const index = this.value.tasks.findIndex((task) => task === id);
       this.value.tasks.splice(index, 1);
+      await this.calculateEstimation();
       await this.calculateProgress();
       await this.saveIssue(this.value);
     },

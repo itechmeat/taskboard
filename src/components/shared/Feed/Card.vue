@@ -5,7 +5,11 @@
     :to="'/projects/demo/feed/' + value.id"
   >
     <ui-battery :progress="value.progress" />
+
     <div class="feed-card__label">{{ value.name }}</div>
+
+    <ui-time :value="value.estimate || 0" />
+
     <div class="feed-card__arrow">
       <div class="task__control" />
     </div>

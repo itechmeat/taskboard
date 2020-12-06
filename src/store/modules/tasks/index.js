@@ -30,9 +30,10 @@ const actions = {
 
     await db.tasks
       .put(newTask)
-      .then((res) => {
+      .then(async (res) => {
         taskId = res;
-        dispatch("fetchTasks");
+        await dispatch("fetchTasks");
+        return res;
       })
       .catch((error) => {
         // eslint-disable-next-line no-console

@@ -7,7 +7,7 @@
       aria-label="Menu"
       @click="handleClick"
     >
-      <span class="ui-menu__label">
+      <span v-if="label" class="ui-menu__label">
         {{ label }}
       </span>
       <span class="ui-menu__icon" />
