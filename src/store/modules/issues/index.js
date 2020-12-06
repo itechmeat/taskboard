@@ -18,6 +18,8 @@ const getters = {
   [TYPES.GET_ISSUES_BY_TRACK_ID]: (state) => (id) => {
     return state.issues.filter((issue) => issue.trackId === id);
   },
+  [TYPES.GET_ISSUES_ESTIMATE]: (state) =>
+    state.issues.reduce((acc, issue) => acc + (issue.estimate || 0), 0),
 };
 
 const actions = {

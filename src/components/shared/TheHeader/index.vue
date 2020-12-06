@@ -2,7 +2,10 @@
   <header class="header">
     <router-link to="/" class="header__brand">Estim8.work</router-link>
 
-    <div class="space" />
+    <div class="header__estimation">
+      <span>Evaluation of the Demo project</span>
+      <ui-time :value="issuesEstimate || 0" />
+    </div>
 
     <div v-if="isModeVisible" class="header__mode">
       <ui-switcher
@@ -17,6 +20,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { GET_ISSUES_ESTIMATE } from "@/store/modules/issues/types";
+
 export default {
   name: "Header",
 
@@ -27,6 +33,10 @@ export default {
   },
 
   computed: {
+    ...mapGetters("issues", {
+      issuesEstimate: GET_ISSUES_ESTIMATE,
+    }),
+
     isModeVisible() {
       return (
         this.$route.name === "ProjectFeed" ||
@@ -84,6 +94,15 @@ $block: ".header";
 
   &__mode {
     flex: 0 0 auto;
+  }
+
+  &__estimation {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-right: var(--gap-0-5);
+    }
   }
 }
 </style>

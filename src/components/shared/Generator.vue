@@ -29,7 +29,7 @@
         </ui-button>
       </div>
 
-      <div class="generator__option">
+      <div v-if="false" class="generator__option">
         <ui-button
           size="large"
           type="primary"
@@ -40,12 +40,6 @@
           Open empty project
         </ui-button>
       </div>
-
-      <p class="generator__note">
-        All issues (and tasks in popups) in the demo project are real for this
-        challenge. Here you can see what has already been done, what is in
-        progress, and what I will probably finish later.
-      </p>
     </div>
   </div>
 </template>
@@ -147,6 +141,7 @@ export default {
 
     async remove() {
       await this.clearDB();
+      await this.fetchIssues();
       await this.fetchTracks();
     },
   },

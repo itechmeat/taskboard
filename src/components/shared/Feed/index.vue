@@ -77,7 +77,7 @@ export default {
       this.$router.push("/projects/demo/feed");
     },
 
-    addIssue() {
+    async addIssue() {
       const name = prompt("Name of the Issue", "New Issue");
 
       let trackId = null;
@@ -86,13 +86,19 @@ export default {
         trackId = this.tracks[0].id;
       }
 
-      this.saveIssue({
+      const newIssueId = await this.saveIssue({
         name,
         description: "",
         trackId,
         tasks: [],
         order: this.issues.length * 10,
+        progress: 0,
+        estimate: 0,
       });
+
+      if (newIssueId) {
+        this.$router.push("/projects/demo/feed/" + newIssueId);
+      }
     },
   },
 };

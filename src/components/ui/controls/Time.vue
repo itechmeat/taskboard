@@ -8,6 +8,7 @@
     >
       {{ result }}
     </component>
+
     <input
       v-else
       v-model="text"
@@ -120,6 +121,11 @@ $block: ".ui-time";
 
   &__result {
     @extend %resetButton;
+    cursor: default;
+
+    #{$block}_changeable & {
+      cursor: pointer;
+    }
   }
 
   &__input {

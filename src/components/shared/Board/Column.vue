@@ -146,6 +146,9 @@ export default {
         description: "",
         trackId: this.value.id,
         tasks: [],
+        order: this.issues.length * 10,
+        progress: 0,
+        estimate: 0,
       });
     },
 
