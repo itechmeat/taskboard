@@ -29,7 +29,7 @@ export default {
 
   metaInfo: {
     title: "Just another task tracker",
-    titleTemplate: "%s | TaskBoard",
+    titleTemplate: "%s | estim8.work",
     meta: [
       { charset: "utf-8" },
       {

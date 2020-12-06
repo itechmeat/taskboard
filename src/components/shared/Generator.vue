@@ -136,7 +136,8 @@ export default {
       }
 
       this.isGenerating = false;
-      this.$router.push("/projects/demo/feed");
+      const firstIssueId = this.issues[0].id;
+      this.$router.push("/projects/demo/feed/" + firstIssueId);
     },
 
     async remove() {
@@ -166,7 +167,9 @@ function calculateProgress(tasks) {
 $block: ".generator";
 
 #{$block} {
-  min-width: 240px;
+  width: 240px;
+  max-width: 100%;
+  margin: auto;
   text-align: center;
 
   &__option {

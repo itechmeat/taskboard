@@ -1,6 +1,9 @@
 <template>
   <header class="header">
-    <router-link to="/" class="header__brand">Estim8.work</router-link>
+    <router-link to="/" class="header__brand">
+      <span class="header__name">estim8.</span>
+      <span class="header__ext">work</span>
+    </router-link>
 
     <div class="header__estimation">
       <span>Evaluation of the Demo project</span>
@@ -76,20 +79,33 @@ export default {
 $block: ".header";
 
 #{$block} {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  padding: 0 var(--gap);
-  background: var(--color-primary);
-  box-shadow: 0 4px 16px rgba($colorShadow, 0.2);
-  color: var(--color-light);
+  & {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 var(--gap);
+    background: var(--color-primary);
+    box-shadow: 0 4px 16px rgba($colorShadow, 0.2);
+    color: var(--color-light);
+  }
 
   &__brand {
     margin: 0 var(--gap-2) 0 0;
+    font-family: var(--font-family-brand);
     font-size: var(--font-size-legend);
     font-weight: 500;
+    line-height: 1;
     text-decoration: none;
+  }
+
+  &__name {
+    display: block;
+  }
+
+  &__ext {
+    display: block;
+    margin: -8px 0 0 49px;
   }
 
   &__mode {

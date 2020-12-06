@@ -21,7 +21,7 @@
 
       <div class="space" />
 
-      <div class="issue__action">
+      <div v-if="false" class="issue__action">
         <div class="issue__track">
           <ui-menu type="success" label="Paid in part">
             <ui-menu-title>Payment status</ui-menu-title>

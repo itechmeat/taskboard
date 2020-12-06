@@ -1,5 +1,28 @@
 export default [
   {
+    name: "Implement CRUD for all entities",
+    description: "At the first stage, it is permissible to use an IndexedDB",
+    track: "Done",
+    progress: 0,
+    tasks: [
+      {
+        name: "Implement CRUD for tracks (columns)",
+        estimate: 120,
+        isDone: true,
+      },
+      {
+        name: "Implement CRUD for Issues",
+        estimate: 90,
+        isDone: true,
+      },
+      {
+        name: "Implement CRUD for Tasks",
+        estimate: 60,
+        isDone: true,
+      },
+    ],
+  },
+  {
     name: "Create a layout and design all the required components",
     description: "No need to make the connection to the <b>data store</b>.",
     track: "Done",
@@ -42,29 +65,6 @@ export default [
       },
       {
         name: "Add Task component",
-        estimate: 60,
-        isDone: true,
-      },
-    ],
-  },
-  {
-    name: "Implement CRUD for all entities",
-    description: "At the first stage, it is permissible to use an IndexedDB",
-    track: "Done",
-    progress: 0,
-    tasks: [
-      {
-        name: "Implement CRUD for tracks (columns)",
-        estimate: 120,
-        isDone: true,
-      },
-      {
-        name: "Implement CRUD for Issues",
-        estimate: 90,
-        isDone: true,
-      },
-      {
-        name: "Implement CRUD for Tasks",
         estimate: 60,
         isDone: true,
       },
