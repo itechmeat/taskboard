@@ -1,6 +1,10 @@
 <template>
   <div class="footer-social">
-    <a href="https://t.me/techmeat" target="_blank" class="footer-social__link">
+    <a
+      href="https://t.me/estim8work"
+      target="_blank"
+      class="footer-social__link"
+    >
       <i class="mdi mdi-24px mdi-telegram"></i>
     </a>
   </div>
