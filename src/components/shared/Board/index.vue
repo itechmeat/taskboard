@@ -107,12 +107,12 @@ export default {
       immediate: true,
       deep: true,
       handler(val) {
-        if (!val || !val.id) {
+        if (!val || !val.issue) {
           this.isModalVisible = false;
           this.visibleIssueId = null;
           return;
         }
-        this.visibleIssueId = val.id;
+        this.visibleIssueId = val.issue;
         this.isModalVisible = true;
       },
     },
@@ -330,7 +330,7 @@ export default {
     },
 
     closeModal() {
-      this.$router.push("/projects/demo/board");
+      this.$router.push(`/projects/${this.$route.params.project}/board`);
     },
   },
 };

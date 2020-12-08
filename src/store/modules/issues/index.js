@@ -66,6 +66,8 @@ const actions = {
   },
 
   async deleteIssue({ dispatch }, id) {
+    // TODO: Delete the Issue from Track
+    // TODO: Delete all Tasks of the Issue
     await db.issues.delete(id);
     dispatch("fetchIssues");
   },

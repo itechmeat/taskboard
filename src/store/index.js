@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import system from "./modules/system";
+import projects from "./modules/projects";
 import tracks from "./modules/tracks";
 import issues from "./modules/issues";
 import tasks from "./modules/tasks";
@@ -13,6 +14,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     system,
+    projects,
     tracks,
     issues,
     tasks,

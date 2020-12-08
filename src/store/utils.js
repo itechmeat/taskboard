@@ -3,8 +3,9 @@ import { nanoid } from "nanoid";
 
 export function getDB() {
   const db = new Dexie("estimator");
-  db.version(2).stores({
+  db.version(3).stores({
     tracks: "++id",
+    projects: "++id",
     issues: "++id,trackId",
     tasks: "++id,issueId",
   });

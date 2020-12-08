@@ -2,7 +2,7 @@
   <router-link
     v-if="value"
     :class="['feed-card', { 'feed-card_active': active }]"
-    :to="'/projects/demo/feed/' + value.id"
+    :to="`/projects/${$route.params.project}/feed/${value.id}`"
   >
     <ui-battery :progress="value.progress" />
 

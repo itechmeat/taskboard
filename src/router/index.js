@@ -22,27 +22,27 @@ const routes = [
     component: Projects,
   },
   {
-    path: "/projects/demo",
+    path: "/projects/:project",
     name: "ProjectDashboard",
     component: Feed,
   },
   {
-    path: "/projects/demo/feed",
+    path: "/projects/:project/feed",
     name: "ProjectFeed",
     component: Feed,
   },
   {
-    path: "/projects/demo/feed/:id",
+    path: "/projects/:project/feed/:issue",
     name: "ProjectFeedCard",
     component: Feed,
   },
   {
-    path: "/projects/demo/board",
+    path: "/projects/:project/board",
     name: "ProjectBoard",
     component: Board,
   },
   {
-    path: "/projects/demo/board/:id",
+    path: "/projects/:project/board/:issue",
     name: "ProjectBoardCard",
     component: Board,
   },

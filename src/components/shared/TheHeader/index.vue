@@ -6,7 +6,8 @@
     </router-link>
 
     <div class="header__estimation">
-      <span>Evaluation of the Demo project</span>
+      <span v-if="project">Evaluation of the {{ project.name }}</span>
+      <span v-else>Evaluation</span>
       <ui-time :value="issuesEstimate || 0" />
     </div>
 
@@ -24,6 +25,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { GET_PROJECT_BY_ID } from "@/store/modules/projects/types";
 import { GET_ISSUES_ESTIMATE } from "@/store/modules/issues/types";
 
 export default {
@@ -36,9 +38,19 @@ export default {
   },
 
   computed: {
+    ...mapGetters("projects", {
+      currentProject: GET_PROJECT_BY_ID,
+    }),
     ...mapGetters("issues", {
       issuesEstimate: GET_ISSUES_ESTIMATE,
     }),
+
+    project() {
+      if (!this.$route.params.project) {
+        return;
+      }
+      return this.currentProject(this.$route.params.project);
+    },
 
     isModeVisible() {
       return (
@@ -67,7 +79,7 @@ export default {
       ) {
         return;
       }
-      this.$router.push("/projects/demo/" + mode);
+      this.$router.push(`/projects/${this.$route.params.project}/${mode}`);
     },
   },
 };

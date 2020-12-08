@@ -8,6 +8,7 @@ const getters = {};
 
 const actions = {
   async clearDB() {
+    await db.projects.clear();
     await db.tracks.clear();
     await db.issues.clear();
     await db.tasks.clear();

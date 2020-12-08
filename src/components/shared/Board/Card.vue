@@ -2,7 +2,7 @@
   <router-link
     v-if="value"
     class="board-card"
-    :to="'/projects/demo/board/' + value.id"
+    :to="`/projects/${this.$route.params.project}/board/${value.id}`"
     :draggable="canDrag"
     :data-issue="index"
   >

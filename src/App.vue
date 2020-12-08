@@ -17,12 +17,14 @@ export default {
   },
 
   created() {
+    this.fetchProjects();
     this.fetchTracks();
     this.fetchIssues();
     this.fetchTasks();
   },
 
   methods: {
+    ...mapActions("projects", ["fetchProjects"]),
     ...mapActions("tracks", ["fetchTracks"]),
     ...mapActions("issues", ["fetchIssues"]),
     ...mapActions("tasks", ["fetchTasks"]),

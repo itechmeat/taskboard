@@ -145,10 +145,12 @@ export default {
         name,
         description: "",
         trackId: this.value.id,
+        oldTrackId: this.value.id,
         tasks: [],
-        order: this.issues.length * 10,
+        order: this.value.issues.length * 10,
         progress: 0,
         estimate: 0,
+        projectId: this.$route.params.project,
       });
     },
 

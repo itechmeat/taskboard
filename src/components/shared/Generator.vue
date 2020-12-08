@@ -4,11 +4,11 @@
       v-if="tracks && tracks.length > 0 && !isGenerating"
       class="generator__options"
     >
-      <div class="generator__option">
+      <div v-if="project" class="generator__option">
         <ui-button
           size="large"
           type="primary"
-          to="/projects/demo/feed"
+          :to="`/projects/${project.id}/feed`"
           expanded
         >
           Open project
@@ -45,7 +45,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import {
+  GET_PROJECTS,
+  SET_CURRENT_PROJECT,
+  GET_PROJECT_BY_ID,
+} from "@/store/modules/projects/types";
 import { GET_ISSUES } from "@/store/modules/issues/types";
 import { GET_TRACKS } from "@/store/modules/tracks/types";
 import TRACKS from "@/assets/data/tracks";
@@ -55,12 +60,20 @@ export default {
   name: "Generator",
 
   computed: {
-    ...mapGetters("issues", {
-      issues: GET_ISSUES,
+    ...mapGetters("projects", {
+      projects: GET_PROJECTS,
+      currentProject: GET_PROJECT_BY_ID,
     }),
     ...mapGetters("tracks", {
       tracks: GET_TRACKS,
     }),
+    ...mapGetters("issues", {
+      issues: GET_ISSUES,
+    }),
+
+    project() {
+      return this.currentProject();
+    },
   },
 
   data() {
@@ -75,17 +88,30 @@ export default {
 
   methods: {
     ...mapActions("system", ["clearDB"]),
+    ...mapActions("projects", ["fetchProjects", "saveProject"]),
     ...mapActions("tracks", ["fetchTracks", "saveTrack"]),
     ...mapActions("issues", ["fetchIssues", "saveIssue"]),
     ...mapActions("tasks", ["saveTask"]),
 
+    ...mapMutations("projects", {
+      setProject: SET_CURRENT_PROJECT,
+    }),
+
     async generate() {
       this.isGenerating = true;
+
+      const projectId = await this.saveProject({
+        name: "Demo Project",
+      });
+
+      this.setProject(projectId);
+
       TRACKS.forEach((track, index) => {
         this.saveTrack({
           name: track,
           order: (index + 1) * 10,
           issues: [],
+          projectId,
         });
       });
 
@@ -105,6 +131,7 @@ export default {
               name: task.name,
               estimate: task.estimate,
               isDone: task.isDone,
+              projectId,
             });
             tasks.push(taskId);
           }
@@ -118,6 +145,7 @@ export default {
           progress: calculateProgress(issue.tasks),
           order: order,
           tasks,
+          projectId,
         });
 
         order += 10;
@@ -137,7 +165,7 @@ export default {
 
       this.isGenerating = false;
       const firstIssueId = this.issues[0].id;
-      this.$router.push("/projects/demo/feed/" + firstIssueId);
+      this.$router.push(`/projects/${projectId}/feed/${firstIssueId}`);
     },
 
     async remove() {

@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import { SET_CURRENT_PROJECT } from "@/store/modules/projects/types";
 import { GET_TRACKS } from "@/store/modules/tracks/types";
 import { GET_ISSUES } from "@/store/modules/issues/types";
 import FeedCard from "@/components/shared/Feed/Card";
@@ -57,24 +58,37 @@ export default {
   },
 
   watch: {
-    "$route.params": {
+    "$route.params.project": {
+      immediate: true,
+      handler(val) {
+        if (!val) {
+          return;
+        }
+        this.setProject(val);
+      },
+    },
+
+    "$route.params.issue": {
       immediate: true,
       deep: true,
       handler(val) {
-        if (!val || !val.id) {
+        if (!val) {
           this.visibleIssueId = null;
           return;
         }
-        this.visibleIssueId = val.id;
+        this.visibleIssueId = val;
       },
     },
   },
 
   methods: {
+    ...mapMutations("projects", {
+      setProject: SET_CURRENT_PROJECT,
+    }),
     ...mapActions("issues", ["saveIssue"]),
 
     closeIssue() {
-      this.$router.push("/projects/demo/feed");
+      this.$router.push(`/projects/${this.$route.params.project}/feed/`);
     },
 
     async addIssue() {
@@ -90,14 +104,18 @@ export default {
         name,
         description: "",
         trackId,
+        oldTrackId: trackId,
         tasks: [],
         order: this.issues.length * 10,
         progress: 0,
         estimate: 0,
+        projectId: this.$route.params.project,
       });
 
       if (newIssueId) {
-        this.$router.push("/projects/demo/feed/" + newIssueId);
+        this.$router.push(
+          `/projects/${this.$route.params.project}/feed/${newIssueId}`
+        );
       }
     },
   },
