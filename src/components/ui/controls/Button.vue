@@ -7,6 +7,7 @@
     :rel="href ? 'noopener' : false"
     :disabled="disabled || loading"
     :class="buttonClass"
+    :type="nativeType"
     @click="handleClick"
   >
     <span v-if="$slots.default" class="ui-button__text">
@@ -31,6 +32,10 @@ export default {
     type: {
       type: String,
       default: "default",
+    },
+    nativeType: {
+      type: String,
+      default: undefined,
     },
     size: {
       type: String,

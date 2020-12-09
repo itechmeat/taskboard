@@ -1,0 +1,64 @@
+$block: '.form';
+
+#{$block} {
+  &__fieldset {
+    margin: calc(var(--gap) * -1) 0;
+
+    @include display(qhd) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+
+  &__row {
+    margin: var(--gap) 0;
+
+    &_empty {
+      display: none;
+    }
+
+    &_far {
+      margin: var(--gap-1-5) 0;
+    }
+
+    &_near {
+      margin: 12px 0;
+    }
+
+    &_end {
+      text-align: right;
+    }
+
+    &_submit {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @include display(qhd) {
+      flex: 0 0 100%;
+
+      &_half {
+        flex-basis: calc(50% - var(--gap));
+      }
+
+      &_third {
+        flex-basis: calc(100% / 3 - var(--gap-2) / 1.5);
+      }
+
+      &_empty {
+        display: block;
+      }
+    }
+
+    &_first {
+      margin-top: 0;
+    }
+
+    &_last {
+      margin-bottom: 0;
+    }
+  }
+}

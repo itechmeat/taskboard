@@ -19,6 +19,7 @@ import Modal from "./components/ui/wrappers/Modal.vue";
 import Spinner from "./components/ui/elements/Spinner.vue";
 import Battery from "./components/ui/elements/Battery.vue";
 import Notice from "./components/ui/elements/Notice.vue";
+import Avatar from "./components/ui/elements/Avatar.vue";
 
 Vue.component("ui-button", Button);
 Vue.component("ui-simple-button", SimpleButton);
@@ -39,3 +40,4 @@ Vue.component("ui-modal", Modal);
 Vue.component("ui-spinner", Spinner);
 Vue.component("ui-battery", Battery);
 Vue.component("ui-notice", Notice);
+Vue.component("ui-avatar", Avatar);

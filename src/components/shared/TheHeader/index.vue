@@ -5,11 +5,17 @@
       <span class="header__ext">work</span>
     </router-link>
 
-    <div class="header__estimation">
-      <span v-if="project">Evaluation of the {{ project.name }}</span>
-      <span v-else>Evaluation</span>
-      <ui-time :value="issuesEstimate || 0" />
-    </div>
+    <div class="space" />
+
+    <template v-if="user">
+      <div class="header__estimation">
+        <span v-if="project">Evaluation of the {{ project.name }}</span>
+        <span v-else>Evaluation</span>
+        <ui-time :value="issuesEstimate || 0" />
+      </div>
+
+      <div class="space" />
+    </template>
 
     <div v-if="isModeVisible" class="header__mode">
       <ui-switcher
@@ -20,6 +26,8 @@
         @change="switchMode"
       />
     </div>
+
+    <User />
   </header>
 </template>
 
@@ -27,9 +35,15 @@
 import { mapGetters } from "vuex";
 import { GET_PROJECT_BY_ID } from "@/store/modules/projects/types";
 import { GET_ISSUES_ESTIMATE } from "@/store/modules/issues/types";
+import { GET_USER } from "@/store/modules/user/types";
+import User from "@/components/shared/TheHeader/User";
 
 export default {
   name: "Header",
+
+  components: {
+    User,
+  },
 
   data() {
     return {
@@ -38,6 +52,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters("user", {
+      user: GET_USER,
+    }),
     ...mapGetters("projects", {
       currentProject: GET_PROJECT_BY_ID,
     }),

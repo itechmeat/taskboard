@@ -28,5 +28,17 @@ export default {
 $block: ".ui-field";
 
 #{$block} {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__label {
+    flex: 0 0 auto;
+    margin: 0 0 var(--gap-0-5);
+    font-weight: 500;
+  }
+
+  &__control {
+    flex: 0 0 100%;
+  }
 }
 </style>

@@ -3,31 +3,66 @@
     <TheHeader />
 
     <router-view />
+
+    <ui-modal :visible="!!popup" @close="closeModal">
+      <component
+        v-if="popup"
+        :is="popup"
+        @change="handleChangePopup"
+        @close="handleChangePopup(false)"
+      />
+    </ui-modal>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
+import { GET_POPUP, SET_POPUP } from "@/store/modules/content/types";
 import TheHeader from "@/components/shared/TheHeader";
+import Login from "@/components/shared/Auth/Login";
+import SignUp from "@/components/shared/Auth/SignUp";
 import config from "@/app.config";
 
 export default {
+  name: "App",
+
   components: {
     TheHeader,
+    Login,
+    SignUp,
   },
 
   created() {
+    this.authRequest();
     this.fetchProjects();
     this.fetchTracks();
     this.fetchIssues();
     this.fetchTasks();
   },
 
+  computed: {
+    ...mapGetters("content", {
+      popup: GET_POPUP,
+    }),
+  },
+
   methods: {
+    ...mapActions("user", ["authRequest"]),
     ...mapActions("projects", ["fetchProjects"]),
     ...mapActions("tracks", ["fetchTracks"]),
     ...mapActions("issues", ["fetchIssues"]),
     ...mapActions("tasks", ["fetchTasks"]),
+    ...mapMutations("content", {
+      setPopup: SET_POPUP,
+    }),
+
+    handleChangePopup(val) {
+      this.setPopup(val);
+    },
+
+    closeModal() {
+      this.setPopup();
+    },
   },
 
   metaInfo() {

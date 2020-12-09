@@ -53,6 +53,7 @@ $block: ".ui-menu-item";
   display: block;
   width: 100%;
   padding: var(--gap-0-5) var(--gap);
+  color: var(--color-text);
   text-align: right;
   white-space: nowrap;
   user-select: none;
@@ -60,6 +61,7 @@ $block: ".ui-menu-item";
 
   &:hover {
     background: var(--color-bg-accent);
+    color: var(--color-text);
   }
 }
 </style>

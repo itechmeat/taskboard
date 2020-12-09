@@ -7,10 +7,13 @@
       aria-label="Menu"
       @click="handleClick"
     >
-      <span v-if="label" class="ui-menu__label">
+      <div v-if="label" class="ui-menu__label">
         {{ label }}
-      </span>
-      <span class="ui-menu__icon" />
+      </div>
+      <div v-if="$slots.content" class="ui-menu__content">
+        <slot name="content" />
+      </div>
+      <div class="ui-menu__icon" />
     </ui-button>
 
     <div class="ui-menu__dropdown">
@@ -73,6 +76,11 @@ $block: ".ui-menu";
     vertical-align: bottom;
   }
 
+  &__text {
+    display: block;
+  }
+
+  &__content,
   &__label {
     padding-right: var(--gap);
   }
@@ -123,8 +131,8 @@ $block: ".ui-menu";
     }
   }
 
-  &__label + &__icon {
-    left: auto;
+  &__label + &__icon,
+  &__content + &__icon {
     right: var(--gap);
   }
 

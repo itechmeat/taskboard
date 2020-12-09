@@ -5,6 +5,12 @@
         <slot />
       </div>
 
+      <div v-if="$slots.cancel || $slots.submit" class="ui-modal__footer">
+        <slot class="cancel" />
+        <div class="space" />
+        <slot class="submit" />
+      </div>
+
       <div class="ui-modal__close">
         <ui-simple-button @click="close" />
       </div>
@@ -107,6 +113,12 @@ $block: ".ui-modal";
       max-height: calc(100vh - var(--gap-2) * 3);
       height: auto;
     }
+  }
+
+  &__footer {
+    margin-top: var(--gap-2);
+    padding-top: var(--gap-2);
+    border-top: 1px solid var(--color-border);
   }
 
   &__close {
