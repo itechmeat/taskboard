@@ -26,7 +26,7 @@ export default {
 
   data() {
     return {
-      partners: ["upwork", "freelancer", "fiverr", "weblancer"],
+      partners: ["upwork", "freelancer", "fiverr", "toptal"],
     };
   },
 };
