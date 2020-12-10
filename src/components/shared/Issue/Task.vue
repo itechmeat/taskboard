@@ -22,7 +22,29 @@
       </div>
 
       <div class="task__actions">
-        <ui-menu>
+        <ui-button
+          v-if="isStarted"
+          type="clear"
+          size="tiny"
+          icon-position="center"
+          rounded
+          @click="pause"
+        >
+          <i class="mdi mdi-pause"></i>
+        </ui-button>
+
+        <ui-button
+          v-else
+          type="clear"
+          size="tiny"
+          icon-position="center"
+          rounded
+          @click="start"
+        >
+          <i class="mdi mdi-play"></i>
+        </ui-button>
+
+        <ui-menu rounded size="tiny">
           <ui-menu-item v-if="!value.isDone" @click="complete">
             Mark as complete
           </ui-menu-item>
@@ -37,7 +59,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import { GET_TASK_BY_ID } from "@/store/modules/tasks/types";
 
 export default {
@@ -62,9 +84,17 @@ export default {
   },
 
   computed: {
+    ...mapState("tasks", ["startedTaskId"]),
     ...mapGetters("tasks", {
       task: GET_TASK_BY_ID,
     }),
+
+    isStarted() {
+      if (!this.startedTaskId || !this.value) {
+        return;
+      }
+      return this.startedTaskId === this.value.id;
+    },
   },
 
   watch: {
@@ -81,7 +111,13 @@ export default {
   },
 
   methods: {
-    ...mapActions("tasks", ["fetchTasks", "saveTask", "deleteTask"]),
+    ...mapActions("tasks", [
+      "fetchTasks",
+      "saveTask",
+      "deleteTask",
+      "startTask",
+      "pauseTask",
+    ]),
 
     async fillTask(val) {
       const id = val || this.id;
@@ -97,6 +133,14 @@ export default {
 
     focus() {
       this.canDrag = false;
+    },
+
+    start() {
+      this.startTask(this.value.id);
+    },
+
+    pause() {
+      this.pauseTask();
     },
 
     async save() {
@@ -136,7 +180,7 @@ export default {
 $block: ".task";
 
 #{$block} {
-  margin: 0 -20px 0 -20px;
+  margin: 0 -20px;
   padding: 4px;
   border-radius: var(--border-raius);
 
@@ -192,7 +236,14 @@ $block: ".task";
   }
 
   &__actions {
+    display: flex;
+    align-items: center;
     margin-left: -4px;
+
+    .mdi {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+    }
   }
 }
 </style>

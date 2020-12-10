@@ -3,6 +3,8 @@
     <ui-button
       v-click-outside="closeMenu"
       :type="type"
+      :size="size"
+      :rounded="rounded"
       class="ui-menu__control"
       aria-label="Menu"
       @click="handleClick"
@@ -35,11 +37,16 @@ export default {
       type: String,
       default: undefined,
     },
+    size: {
+      type: String,
+      default: undefined,
+    },
     position: {
       // Todo: premature implementation
       type: String,
       default: "bottom right",
     },
+    rounded: Boolean,
   },
 
   data() {

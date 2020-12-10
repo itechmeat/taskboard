@@ -131,6 +131,8 @@ export default {
               name: task.name,
               estimate: task.estimate,
               isDone: task.isDone,
+              times: [],
+              spentTime: 0,
               projectId,
             });
             tasks.push(taskId);

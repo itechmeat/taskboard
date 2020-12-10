@@ -336,6 +336,7 @@ export default {
 
   &__icon {
     margin: 0 4px 0 0;
+    line-height: 1;
 
     .ui-button_reverse & {
       margin: 0 0 0 4px;

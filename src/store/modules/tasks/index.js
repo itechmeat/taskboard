@@ -7,6 +7,8 @@ const db = getDB();
 const state = () => ({
   isLoading: false,
   tasks: [],
+  startedTaskId: undefined,
+  startedTaskTime: undefined,
 });
 
 const getters = {
@@ -15,6 +17,7 @@ const getters = {
   [TYPES.GET_TASK_BY_ID]: (state) => (id) => {
     return state.tasks.find((task) => task.id === id);
   },
+  [TYPES.GET_STARTED_TASK_TIME]: (state) => state.startedTaskTime,
 };
 
 const actions = {
@@ -47,6 +50,23 @@ const actions = {
     await db.tasks.delete(id);
     dispatch("fetchTasks");
   },
+
+  startTask({ commit }, id) {
+    commit(TYPES.SET_STARTED_TASK, id);
+  },
+
+  async pauseTask({ commit, dispatch, state, getters }) {
+    const now = Date.now();
+    let task = { ...getters[TYPES.GET_TASK_BY_ID](state.startedTaskId) };
+    task.times.push({
+      date: new Date(),
+      seconds: Math.floor((now - state.startedTaskTime) / 1000),
+    });
+    task.spentTime = task.times.reduce((acc, time) => acc + time.seconds, 0);
+    await dispatch("saveTask", task);
+    task = undefined;
+    commit(TYPES.SET_STARTED_TASK, undefined);
+  },
 };
 
 const mutations = {
@@ -56,6 +76,15 @@ const mutations = {
 
   [TYPES.SET_TASKS]: (state, payload) => {
     state.tasks = payload;
+  },
+
+  [TYPES.SET_STARTED_TASK]: (state, payload) => {
+    state.startedTaskId = payload;
+    if (!payload) {
+      state.startedTaskTime = undefined;
+      return;
+    }
+    state.startedTaskTime = Date.now();
   },
 };
 

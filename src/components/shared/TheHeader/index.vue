@@ -8,7 +8,11 @@
     <div class="space" />
 
     <template v-if="user">
-      <div class="header__estimation">
+      <div v-if="ms" class="header__timer">
+        {{ hours }}:{{ minutes }}:{{ seconds }}
+      </div>
+
+      <div v-else class="header__estimation">
         <span v-if="project">Evaluation of the {{ project.name }}</span>
         <span v-else>Evaluation</span>
         <ui-time :value="issuesEstimate || 0" />
@@ -32,9 +36,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { GET_PROJECT_BY_ID } from "@/store/modules/projects/types";
 import { GET_ISSUES_ESTIMATE } from "@/store/modules/issues/types";
+import { GET_STARTED_TASK_TIME } from "@/store/modules/tasks/types";
 import { GET_USER } from "@/store/modules/user/types";
 import User from "@/components/shared/TheHeader/User";
 
@@ -48,10 +53,12 @@ export default {
   data() {
     return {
       isBoard: false,
+      ms: null,
     };
   },
 
   computed: {
+    ...mapState("tasks", ["startedTaskId"]),
     ...mapGetters("user", {
       user: GET_USER,
     }),
@@ -61,12 +68,27 @@ export default {
     ...mapGetters("issues", {
       issuesEstimate: GET_ISSUES_ESTIMATE,
     }),
+    ...mapGetters("tasks", {
+      startedTaskTime: GET_STARTED_TASK_TIME,
+    }),
 
     project() {
       if (!this.$route.params.project) {
         return;
       }
       return this.currentProject(this.$route.params.project);
+    },
+
+    seconds() {
+      return this.countTime(1000, 60);
+    },
+
+    minutes() {
+      return this.countTime(1000 * 60, 60);
+    },
+
+    hours() {
+      return this.countTime(1000 * 60 * 60, 24);
     },
 
     isModeVisible() {
@@ -83,7 +105,40 @@ export default {
     this.isBoard = this.$route.name === "ProjectBoard";
   },
 
+  watch: {
+    startedTaskTime: {
+      immediate: true,
+      handler() {
+        this.setTime();
+      },
+    },
+  },
+
   methods: {
+    setTime() {
+      if (!this.startedTaskTime) {
+        this.ms = null;
+        return;
+      }
+
+      this.ms = Date.now() - this.startedTaskTime;
+
+      setTimeout(() => {
+        this.setTime();
+      }, 1000);
+    },
+
+    countTime(divider, surplus) {
+      if (!this.ms) {
+        return;
+      }
+      let result = "" + Math.floor((this.ms / divider) % surplus);
+      if (result.length === 1) {
+        result = "0" + result;
+      }
+      return result;
+    },
+
     switchMode() {
       this.isBoard = !this.isBoard;
       let mode = "feed";
@@ -152,6 +207,11 @@ $block: ".header";
         display: none;
       }
     }
+  }
+
+  &__timer {
+    font-family: "JetBrains Mono", monospace;
+    font-size: var(--font-size-large);
   }
 }
 </style>
