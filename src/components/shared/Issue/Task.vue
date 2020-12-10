@@ -1,5 +1,10 @@
 <template>
-  <div v-if="value" :data-task="index" :draggable="canDrag" class="task">
+  <div
+    v-if="value"
+    :data-task="index"
+    :draggable="canDrag"
+    :class="['task', { task_started: isStarted }]"
+  >
     <div class="task__main">
       <div class="task__handler"></div>
       <div class="task__check">
@@ -213,8 +218,8 @@ $block: ".task";
 
   &__check {
     input {
-      margin: 0;
-      vertical-align: bottom;
+      margin: 1px 0 0;
+      vertical-align: top;
     }
   }
 
@@ -228,6 +233,10 @@ $block: ".task";
     &:focus {
       background: var(--color-bg-accent);
       outline: none;
+    }
+
+    #{$block}_started & {
+      color: var(--color-primary);
     }
   }
 

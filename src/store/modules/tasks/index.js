@@ -51,11 +51,7 @@ const actions = {
     dispatch("fetchTasks");
   },
 
-  startTask({ commit }, id) {
-    commit(TYPES.SET_STARTED_TASK, id);
-  },
-
-  async pauseTask({ commit, dispatch, state, getters }) {
+  async saveTime({ state, dispatch, getters }) {
     const now = Date.now();
     let task = { ...getters[TYPES.GET_TASK_BY_ID](state.startedTaskId) };
     task.times.push({
@@ -64,7 +60,18 @@ const actions = {
     });
     task.spentTime = task.times.reduce((acc, time) => acc + time.seconds, 0);
     await dispatch("saveTask", task);
-    task = undefined;
+  },
+
+  startTask({ commit, state, dispatch }, id) {
+    if (state.startedTaskId) {
+      dispatch("saveTime");
+    }
+
+    commit(TYPES.SET_STARTED_TASK, id);
+  },
+
+  pauseTask({ commit, dispatch }) {
+    dispatch("saveTime");
     commit(TYPES.SET_STARTED_TASK, undefined);
   },
 };

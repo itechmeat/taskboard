@@ -20,6 +20,7 @@ import Spinner from "./components/ui/elements/Spinner.vue";
 import Battery from "./components/ui/elements/Battery.vue";
 import Notice from "./components/ui/elements/Notice.vue";
 import Avatar from "./components/ui/elements/Avatar.vue";
+import Record from "./components/ui/elements/Record.vue";
 
 Vue.component("ui-button", Button);
 Vue.component("ui-simple-button", SimpleButton);
@@ -41,3 +42,4 @@ Vue.component("ui-spinner", Spinner);
 Vue.component("ui-battery", Battery);
 Vue.component("ui-notice", Notice);
 Vue.component("ui-avatar", Avatar);
+Vue.component("ui-record", Record);

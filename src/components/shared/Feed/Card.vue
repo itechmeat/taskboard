@@ -1,10 +1,16 @@
 <template>
   <router-link
     v-if="value"
-    :class="['feed-card', { 'feed-card_active': active }]"
+    :class="[
+      'feed-card',
+      { 'feed-card_active': active },
+      { 'feed-card_started': isStarted },
+    ]"
     :to="`/projects/${$route.params.project}/feed/${value.id}`"
   >
-    <ui-battery :progress="value.progress" />
+    <ui-record v-if="isStarted" class="feed-card__record" />
+
+    <ui-battery v-else :progress="value.progress" />
 
     <div class="feed-card__label">{{ value.name }}</div>
 
@@ -17,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "FeedCard",
@@ -34,6 +40,17 @@ export default {
     return {
       canDrag: true,
     };
+  },
+
+  computed: {
+    ...mapState("tasks", ["startedTaskId"]),
+
+    isStarted() {
+      if (!this.value) {
+        return;
+      }
+      return this.value.tasks.includes(this.startedTaskId);
+    },
   },
 
   methods: {
@@ -79,11 +96,20 @@ $block: ".feed-card";
     &_active:hover {
       background: var(--color-bg-accent);
     }
+
+    &_started,
+    &_started:hover {
+      color: var(--color-primary);
+    }
   }
 
   &__label {
     flex: 1;
     margin-left: var(--gap-0-5);
+  }
+
+  &__record {
+    margin-right: 4px;
   }
 }
 </style>
