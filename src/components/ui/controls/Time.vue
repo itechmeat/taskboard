@@ -89,10 +89,10 @@ export default {
       let result = 0;
 
       if (arr.length === 1) {
-        result = arr[0];
-      } else {
         result = arr[0] * 60;
-        result += Number(arr[1]);
+      } else {
+        result = arr[0] * 60 * 60;
+        result += Number(arr[1] * 60);
       }
 
       this.$emit("change", result);

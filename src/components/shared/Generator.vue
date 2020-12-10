@@ -129,7 +129,7 @@ export default {
           for (const task of issue.tasks) {
             const taskId = await this.saveTask({
               name: task.name,
-              estimate: task.estimate,
+              estimate: task.estimate * 60,
               isDone: task.isDone,
               times: [],
               spentTime: 0,
@@ -143,7 +143,7 @@ export default {
           name: issue.name,
           description: issue.description,
           trackId: issueTrack.id,
-          estimate: issue.tasks.reduce((a, b) => a + b.estimate, 0),
+          estimate: issue.tasks.reduce((a, b) => a + b.estimate * 60, 0),
           progress: calculateProgress(issue.tasks),
           order: order,
           tasks,

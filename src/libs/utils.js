@@ -3,10 +3,11 @@ export function clearText(text) {
 }
 
 export function splitTime(m) {
-  const hours = Math.floor(m / 60);
-  const minutes = m % 60;
+  const hours = Math.floor(m / 60 / 60);
+  const minutes = Math.floor(m / 60) % 60;
+  const seconds = m % 60;
 
-  return { hours, minutes };
+  return { hours, minutes, seconds };
 }
 
 export function getReadableTime(m) {
