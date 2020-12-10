@@ -102,7 +102,7 @@ export default {
     }),
 
     totalSpentTime() {
-      if (!this.value) {
+      if (!this.value || !this.value.times || this.value.times.length === 0) {
         return;
       }
       return this.value.times.reduce((acc, time) => acc + time.seconds, 0);
