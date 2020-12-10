@@ -18,12 +18,19 @@
         @blur="save"
       />
 
-      <div class="task__estimate">
-        <ui-time
-          :value="value.estimate || 0"
-          can-change
-          @change="changeEstimate"
-        />
+      <div class="task__time">
+        <div class="task__estimate">
+          <ui-time
+            :value="value.estimate || 0"
+            type="primary"
+            can-change
+            @change="changeEstimate"
+          />
+        </div>
+
+        <div v-if="totalSpentTime" class="task__spent">
+          <ui-time :value="totalSpentTime" />
+        </div>
       </div>
 
       <div class="task__actions">
@@ -93,6 +100,13 @@ export default {
     ...mapGetters("tasks", {
       task: GET_TASK_BY_ID,
     }),
+
+    totalSpentTime() {
+      if (!this.value) {
+        return;
+      }
+      return this.value.times.reduce((acc, time) => acc + time.seconds, 0);
+    },
 
     isStarted() {
       if (!this.startedTaskId || !this.value) {
@@ -240,8 +254,19 @@ $block: ".task";
     }
   }
 
+  &__time {
+    display: flex;
+    align-items: center;
+  }
+
   &__estimate {
     flex: 0 0 auto;
+  }
+
+  &__spent {
+    margin-left: 2px;
+    padding-left: 2px;
+    border-left: 1px solid var(--color-border);
   }
 
   &__actions {

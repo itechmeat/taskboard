@@ -1,5 +1,5 @@
 <template>
-  <div class="ui-time" :class="{ 'ui-time_changeable': canChange }">
+  <div class="ui-time" :class="classes">
     <component
       v-if="!isInputActive"
       :is="tag"
@@ -31,6 +31,10 @@ export default {
       type: [String, Number],
       default: 0,
     },
+    type: {
+      type: String,
+      default: "default",
+    },
     canChange: Boolean,
   },
 
@@ -52,6 +56,14 @@ export default {
   },
 
   computed: {
+    classes() {
+      return {
+        ["ui-time"]: true,
+        ["ui-time_" + this.type]: true,
+        "ui-time_changeable": this.canChange,
+      };
+    },
+
     tag() {
       if (!this.canChange) {
         return "div";
@@ -111,12 +123,20 @@ $block: ".ui-time";
   padding: 4px;
   border-radius: var(--border-raius);
   background: var(--color-bg-accent);
-  color: var(--color-primary);
+  color: var(--color-text-hint);
   font-size: var(--font-size-small);
   font-weight: 500;
 
   &:focus-within {
-    box-shadow: 0 0 0 1px var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+
+  &_primary {
+    color: var(--color-primary);
+
+    &:focus-within {
+      box-shadow: 0 0 0 1px var(--color-primary);
+    }
   }
 
   &__result {

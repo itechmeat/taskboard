@@ -14,7 +14,7 @@
 
     <div class="feed-card__label">{{ value.name }}</div>
 
-    <ui-time :value="value.estimate || 0" />
+    <ui-time :value="value.estimate || 0" type="primary" />
 
     <div class="feed-card__arrow">
       <div class="task__control" />
