@@ -60,6 +60,7 @@ const actions = {
     });
     task.spentTime = task.times.reduce((acc, time) => acc + time.seconds, 0);
     await dispatch("saveTask", task);
+    await dispatch("fetchTasks");
   },
 
   startTask({ commit, state, dispatch }, id) {

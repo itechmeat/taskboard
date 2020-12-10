@@ -101,8 +101,15 @@ export default {
       task: GET_TASK_BY_ID,
     }),
 
+    storedTask() {
+      if (!this.id) {
+        return;
+      }
+      return this.task(this.id);
+    },
+
     totalSpentTime() {
-      if (!this.value || !this.value.times || this.value.times.length === 0) {
+      if (!this.value || !this.value.times) {
         return;
       }
       return this.value.times.reduce((acc, time) => acc + time.seconds, 0);
@@ -127,6 +134,18 @@ export default {
         this.fillTask(val);
       },
     },
+
+    storedTask: {
+      immediate: true,
+      deep: true,
+      handler(val) {
+        if (!val) {
+          return;
+        }
+
+        this.fillTask(val);
+      },
+    },
   },
 
   methods: {
@@ -138,13 +157,12 @@ export default {
       "pauseTask",
     ]),
 
-    async fillTask(val) {
-      const id = val || this.id;
-      let task = this.task(id);
+    async fillTask() {
+      let task = this.storedTask;
 
       if (!task) {
         await this.fetchTasks();
-        task = this.task(id);
+        task = this.storedTask;
       }
 
       this.value = task;

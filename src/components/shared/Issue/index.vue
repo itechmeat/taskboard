@@ -259,6 +259,9 @@ export default {
       const taskId = await this.saveTask({
         name,
         progress: 0,
+        estimate: 0,
+        spentTime: 0,
+        times: [],
         isDone: false,
       });
 
