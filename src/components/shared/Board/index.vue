@@ -38,16 +38,6 @@
         @close="closeModal"
       />
     </ui-modal>
-
-    <ui-notice
-      can-close
-      type="primary"
-      :visible="isNoticeVisible"
-      @close="closeNotice"
-    >
-      Please open the "Add Drag&Drop for entities" Issue to test changing and
-      Drag&Drop of tasks.
-    </ui-notice>
   </main>
 </template>
 
@@ -70,7 +60,6 @@ export default {
   data() {
     return {
       isModalVisible: false,
-      isNoticeVisible: false,
       visibleIssueId: null,
       trackIndex: null,
       newTrackIndex: null,
@@ -127,10 +116,6 @@ export default {
 
   beforeDestroy() {
     this.removeListeners();
-  },
-
-  mounted() {
-    this.showNotice();
   },
 
   methods: {
@@ -297,19 +282,6 @@ export default {
       this.oldTrack = null;
       this.targetTrack = null;
       this.dragType = undefined;
-    },
-
-    showNotice() {
-      if (!localStorage.closedTaskNotice) {
-        setTimeout(() => {
-          this.isNoticeVisible = true;
-        }, 3000);
-      }
-    },
-
-    closeNotice() {
-      this.isNoticeVisible = false;
-      localStorage.closedTaskNotice = true;
     },
 
     add() {

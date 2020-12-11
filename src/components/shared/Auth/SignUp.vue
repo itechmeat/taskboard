@@ -117,15 +117,16 @@ export default {
   },
 
   methods: {
-    ...mapActions("user", ["login"]),
+    ...mapActions("user", ["fetchUsers"]),
 
     async handleSubmit() {
-      await this.login({
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        password: this.password,
-      });
+      await this.fetchUsers();
+      // await this.signUp({
+      //   firstName: this.firstName,
+      //   lastName: this.lastName,
+      //   email: this.email,
+      //   password: this.password,
+      // });
       this.$emit("close");
     },
 

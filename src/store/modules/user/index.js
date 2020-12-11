@@ -1,3 +1,4 @@
+import { getAllUsers } from "@/api/users.api";
 import * as TYPES from "./types";
 
 const DEMO_DATA = {
@@ -18,6 +19,17 @@ const getters = {
 };
 
 const actions = {
+  async fetchUsers({ commit }) {
+    try {
+      const response = await getAllUsers();
+      console.log("fetchUsers", response.data);
+      // commit("SET_USERS", response.data);
+      commit(TYPES.SET_LOADING, false);
+    } catch (error) {
+      console.log("error", error);
+    }
+  },
+
   login({ commit }, payload) {
     commit(TYPES.SET_LOADING, true);
 

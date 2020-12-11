@@ -176,12 +176,16 @@ $block: ".header";
 
   &__brand {
     margin: 0 var(--gap-2) 0 0;
-    color: var(--color-light);
     font-family: var(--font-family-brand);
     font-size: var(--font-size-legend);
     font-weight: 500;
     line-height: 1;
     text-decoration: none;
+
+    &,
+    &:hover {
+      color: var(--color-light);
+    }
   }
 
   &__name {

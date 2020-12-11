@@ -4,6 +4,8 @@
 
     <router-view />
 
+    <notifications group="api" />
+
     <ui-modal :visible="!!popup" @close="closeModal">
       <component
         v-if="popup"
