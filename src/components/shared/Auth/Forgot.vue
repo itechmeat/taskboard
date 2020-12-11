@@ -38,7 +38,12 @@
           Cancel
         </ui-button>
         <div class="space" />
-        <ui-button type="primary" size="big" native-type="submit">
+        <ui-button
+          type="primary"
+          size="big"
+          native-type="submit"
+          :disabled="!isEmailValid"
+        >
           Submit
         </ui-button>
       </div>
@@ -68,6 +73,12 @@ export default {
     return {
       email: "",
     };
+  },
+
+  computed: {
+    canSubmit() {
+      return this.isEmailValid;
+    },
   },
 
   mounted() {

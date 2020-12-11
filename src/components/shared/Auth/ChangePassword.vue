@@ -46,7 +46,12 @@
           Cancel
         </ui-button>
         <div class="space" />
-        <ui-button type="primary" size="big" native-type="submit">
+        <ui-button
+          type="primary"
+          size="big"
+          native-type="submit"
+          :disabled="!canSubmit"
+        >
           Submit
         </ui-button>
       </div>
@@ -77,6 +82,12 @@ export default {
       password: "",
       password2: "",
     };
+  },
+
+  computed: {
+    canSubmit() {
+      return this.isPasswordValid && this.isPassword2Valid;
+    },
   },
 
   mounted() {
