@@ -249,6 +249,16 @@ export default {
     @include buttonStyle("info", $colorInfo, $colorLight);
   }
 
+  &_link {
+    @include buttonStyle("text", transparent, $colorPrimary);
+    text-decoration: underline;
+
+    &:hover {
+      color: $colorPrimary;
+      text-decoration: none;
+    }
+  }
+
   &_clear {
     background: none;
 

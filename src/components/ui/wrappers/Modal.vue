@@ -1,6 +1,10 @@
 <template>
   <div :class="classes" @click.self="close">
     <div class="ui-modal__main">
+      <div v-if="title" class="ui-modal__header">
+        <h3 class="ui-modal__title">{{ title }}</h3>
+      </div>
+
       <div class="ui-modal__content">
         <slot />
       </div>
@@ -23,6 +27,10 @@ export default {
   name: "UiModal",
 
   props: {
+    title: {
+      type: String,
+      default: undefined,
+    },
     visible: Boolean,
   },
 
@@ -98,6 +106,16 @@ $block: ".ui-modal";
       max-width: calc(100vw - var(--gap-2));
       border-radius: var(--border-raius);
     }
+  }
+
+  &__header {
+    padding: var(--gap-2);
+    padding-bottom: 0;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: var(--font-size-large);
   }
 
   &__content {

@@ -8,7 +8,7 @@
       <component
         v-if="popup"
         :is="popup"
-        @change="handleChangePopup"
+        @redirect="handleChangePopup"
         @close="handleChangePopup(false)"
       />
     </ui-modal>
@@ -21,6 +21,8 @@ import { GET_POPUP, SET_POPUP } from "@/store/modules/content/types";
 import TheHeader from "@/components/shared/TheHeader";
 import Login from "@/components/shared/Auth/Login";
 import SignUp from "@/components/shared/Auth/SignUp";
+import Forgot from "@/components/shared/Auth/Forgot";
+import ChangePassword from "@/components/shared/Auth/ChangePassword";
 import config from "@/app.config";
 
 export default {
@@ -30,6 +32,8 @@ export default {
     TheHeader,
     Login,
     SignUp,
+    Forgot,
+    ChangePassword,
   },
 
   created() {
