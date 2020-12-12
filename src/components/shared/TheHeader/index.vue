@@ -7,12 +7,12 @@
 
     <div class="space" />
 
-    <template v-if="user">
+    <template v-if="user || ms">
       <div v-if="ms" class="header__timer">
         {{ hours }}:{{ minutes }}:{{ seconds }}
       </div>
 
-      <div v-else class="header__estimation">
+      <div v-else-if="user" class="header__estimation">
         <span v-if="project">Evaluation of the {{ project.name }}</span>
         <span v-else>Evaluation</span>
         <ui-time :value="issuesEstimate || 0" />
