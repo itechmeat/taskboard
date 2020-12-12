@@ -1,12 +1,13 @@
 import httpClient from "./httpClient";
 
-const END_POINT = "/users";
+const END_POINT = "/auth";
 
-const getAllUsers = () => httpClient.get(END_POINT);
+const getAllUsers = () => httpClient.get(`${END_POINT}/users`);
+const signIn = (payload) => httpClient.post(END_POINT + "/sign-in", payload);
+const signUp = (payload) => httpClient.post(END_POINT + "/sign-up", payload);
+const forgotPassword = (payload) =>
+  httpClient.post(END_POINT + "/forgot-password", payload);
+const resetPassword = (payload) =>
+  httpClient.post(END_POINT + "/reset-password", payload);
 
-const getUser = (user_id) => httpClient.get(END_POINT, { user_id });
-
-const createUser = (username, password) =>
-  httpClient.post(END_POINT, { username, password });
-
-export { getAllUsers, getUser, createUser };
+export { getAllUsers, signIn, signUp, forgotPassword, resetPassword };

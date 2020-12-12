@@ -14,7 +14,7 @@ const throttleConfig = {
 };
 
 const httpClient = axios.create({
-  baseUrl: process.env.VUE_APP_API_URL || "https://api.estim8.work",
+  baseURL: process.env.VUE_APP_API_URL || "https://api.estim8.work",
   timeout: 1000,
   headers: {
     "Cache-Control": "no-cache",
