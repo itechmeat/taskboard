@@ -15,21 +15,21 @@ const throttleConfig = {
 
 const httpClient = axios.create({
   baseURL: process.env.VUE_APP_API_URL || "https://api.estim8.work",
-  timeout: 1000,
-  headers: {
-    "Cache-Control": "no-cache",
-  },
+  // timeout: 1000,
+  // headers: {
+  //   "Cache-Control": "no-cache",
+  // },
   adapter: throttleAdapterEnhancer(axios.defaults.adapter, throttleConfig),
 });
 
-const getAuthToken = () => localStorage.getItem("token");
+// const getAuthToken = () => localStorage.getItem("token");
 
-const authInterceptor = (config) => {
-  config.headers["X-Auth-Token"] = getAuthToken();
-  return config;
-};
+// const authInterceptor = (config) => {
+//   config.headers["X-Auth-Token"] = getAuthToken();
+//   return config;
+// };
 
-httpClient.interceptors.request.use(authInterceptor);
+// httpClient.interceptors.request.use(authInterceptor);
 
 const errorInterceptor = (error) => {
   if (!error.response) {
