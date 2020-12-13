@@ -1,5 +1,5 @@
 import { getDB, mergeRequiredKeys } from "@/store/utils";
-
+import * as API from "@/api/projects.api";
 import * as TYPES from "./types";
 
 const db = getDB();
@@ -27,6 +27,11 @@ const actions = {
     await db.projects.toArray((res) => {
       commit(TYPES.SET_PROJECTS, res);
     });
+    try {
+      await API.getAllProjects();
+    } catch (error) {
+      console.error("fetchProjects", error);
+    }
   },
 
   async saveProject({ dispatch }, project) {
