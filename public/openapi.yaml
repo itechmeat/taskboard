@@ -1,0 +1,899 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/estim8/estim8API/1.0.0
+info:
+  version: "1.0.0"
+  title: Sample Password Flow OAuth2 Project
+  description: >-
+    This is an example of using OAuth2 Password Flow in a specification to
+    describe security to your API.
+security:
+  - password:
+      - read
+      - write
+tags:
+  - name: Users
+  - name: Clients
+  - name: Projects
+  - name: Issues
+  - name: Tasks
+  - name: Invoices
+paths:
+  /clients:
+    get:
+      tags:
+        - Clients
+      summary: gets clients by current user
+      description: >-
+        Later...
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Clients'
+      security:
+        - bearer: []
+    post:
+      tags:
+        - Clients
+      summary: Add a new client to the store
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clients'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+    put:
+      tags:
+        - Clients
+      summary: Update an existing client
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Clients'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clients'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Client not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /clients/{id}:
+    get:
+      tags:
+        - Clients
+      summary: gets client by ID
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clients'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Client not found
+          content: {}
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Clients
+      summary: Deletes a Clients
+      operationId: deleteClient
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Client ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Client not found
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /projects:
+    get:
+      tags:
+        - Projects
+      summary: gets projects by current user
+      description: >-
+        Later...
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Projects'
+      security:
+        - bearer: []
+    post:
+      tags:
+        - Projects
+      summary: Add a new project to the store
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              type: object
+              properties:
+                name:
+                  type: string
+                projectId:
+                  type: string
+                description:
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+    put:
+      tags:
+        - Projects
+      summary: Update an existing project
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Projects'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Project not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /projects/{id}:
+    get:
+      tags:
+        - Projects
+      summary: gets project by ID
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: ID of project to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Project not found
+          content: {}
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Projects
+      summary: Deletes a Project
+      operationId: deleteProject
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Project ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Project not found
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /projects/{id}/issues:
+    get:
+      tags:
+        - Projects
+      summary: gets issues by projectId
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: list of issues by ID of project to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Issues'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Project not found
+          content: {}
+      security:
+        - bearer: []
+  /projects/{id}/tasks:
+    get:
+      tags:
+        - Projects
+      summary: gets tasks by projectId
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: list of tasks by ID of project to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tasks'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Project not found
+          content: {}
+      security:
+        - bearer: []
+  /issues:
+    post:
+      tags:
+        - Issues
+      summary: Add a new issue to the store
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - projectId
+              type: object
+              properties:
+                name:
+                  type: string
+                projectId:
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issues'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+    put:
+      tags:
+        - Issues
+      summary: Update an existing issue
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Issues'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issues'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Issue not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /issues/{id}:
+    get:
+      tags:
+        - Issues
+      summary: gets issue by ID
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: ID of issue to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issues'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Issue not found
+          content: {}
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Issues
+      summary: Deletes an Issue
+      operationId: deleteIssue
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Issue ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Issue not found
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /tasks:
+    post:
+      tags:
+        - Tasks
+      summary: Add a new task to the store
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - projectId
+              type: object
+              properties:
+                name:
+                  type: string
+                projectId:
+                  type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+    put:
+      tags:
+        - Tasks
+      summary: Update an existing task
+      description: >-
+        Later...
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Tasks'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: gets issue by ID
+      description: >-
+        Later...
+      parameters:
+        - name: id
+          in: path
+          description: ID of task to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasks'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Tasks
+      summary: Deletes an Task
+      operationId: deleteTask
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: id
+          in: path
+          description: Task ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Task not found
+          content: {}
+      security:
+        - password:
+            - write
+            - read
+components:
+  schemas:
+    Clients:
+      required:
+        - id
+        - name
+        - userId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        isOrg:
+          type: boolean
+        orgName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        phone:
+          type: string
+        notes:
+          type: string
+        customFields:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Projects:
+      required:
+        - id
+        - name
+        - userId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        tracks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracks'
+        logo:
+          description: 'Link to image'
+          type: string
+        color:
+          type: string
+          example: '#dadada'
+        rate:
+          type: integer
+          format: int64
+        currency:
+          description: 'ISO 4217 currency code.'
+          type: string
+          pattern: '[a-zA-Z]{3}'
+          example: 'USD'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Tracks:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        order:
+          type: integer
+          format: int64
+          default: 0
+        issuesIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+    Issues:
+      required:
+        - id
+        - name
+        - userId
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        track:
+          type: string
+        estimate:
+          type: integer
+          format: int64
+          default: 0
+        order:
+          type: integer
+          format: int64
+          default: 1000
+        tasksIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        progress:
+          type: integer
+          format: int64
+          default: 0
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Tasks:
+      required:
+        - id
+        - name
+        - userId
+        - isDone
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        isDone:
+          type: boolean
+          default: false
+        estimate:
+          type: integer
+          format: int64
+          default: 0
+        spentTime:
+          type: integer
+          format: int64
+          default: 0
+        times:
+          type: array
+          items:
+            type: string
+            format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Invoices:
+      required:
+        - id
+        - name
+        - userId
+        - tasks
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+        name:
+          type: string
+          pattern: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+        number:
+          type: integer
+          format: int64
+        tasksIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        status:
+          type: string
+          enum: ['in progress', 'completted', 'sent', 'approved', 'paid', 'canceled']
+        currency:
+          description: 'ISO 4217 currency code.'
+          type: string
+          pattern: '[a-zA-Z]{3}'
+          example: 'USD'
+        date:
+          type: string
+          format: date-time
+        due:
+          type: string
+          format: date-time
+        from:
+          type: string
+        to:
+          type: string
+        lang:
+          type: string
+        isWhiteLabel:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    File:
+      type: object
+      properties:
+        content_type:
+          type: string
+        details:
+          type: object
+          properties:
+            image:
+              type: object
+              properties:
+                width:
+                  type: integer
+                height:
+                  type: integer
+        name:
+          type: string
+        size:
+          type: integer
+    Error:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: 'http://example.com/oauth/token'
+          scopes:
+            write: allows modifying resources
+            read: allows reading resources
+    bearer:
+      type: apiKey
+      name: Authorization
+      in: header
