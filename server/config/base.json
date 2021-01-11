@@ -1,4 +1,8 @@
 {
+  "App": {
+    "Host": "127.0.0.1",
+    "Port": 1323
+  },
   "DB": {
     "Hostname": "localhost",
     "Port": 21017,

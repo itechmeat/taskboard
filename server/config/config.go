@@ -12,6 +12,10 @@ import (
 const BaseConfigPath = "./config/"
 
 type Config struct {
+	App struct {
+		Host string
+		Port int
+	}
 	DB struct {
 		Hostname string
 		Port     int
