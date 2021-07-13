@@ -1,4 +1,5 @@
 # taskboard
+[![codecov](https://codecov.io/gh/itechmeat/taskboard/branch/master/graph/badge.svg)](https://codecov.io/gh/itechmeat/taskboard)
 
 ## Project setup
 ```
